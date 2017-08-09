@@ -24,6 +24,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	void Record(){
 		Debug.Log("long tap");
+		Everyplay.StartRecording();
 	}
 
 
@@ -37,6 +38,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         held = false;
         Invoke("OnLongPress", holdTime);
+		Debug.Log("0");
     }
  
     public void OnPointerUp(PointerEventData eventData)
@@ -45,17 +47,21 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
  
         if (!held)
             onClick.Invoke();
+		Debug.Log("1");
+		Everyplay.StopRecording();
     }
  
     public void OnPointerExit(PointerEventData eventData)
     {
         CancelInvoke("OnLongPress");
+		Debug.Log("2");
     }
  
     private void OnLongPress()
     {
         held = true;
         onLongPress.Invoke();
+		Debug.Log("3");
     }
 
 
