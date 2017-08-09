@@ -19,6 +19,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	
 	void TakeShot(){
+		ScreenCapture.CaptureScreenshot("screenshot.png");
 		Debug.Log("short tap");
 	}
 	void Record(){
