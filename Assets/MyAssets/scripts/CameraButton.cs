@@ -4,14 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices;
 
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
+
+    #if UNITY_IPHONE
+    // クラスの最初でインポート
+    [DllImport("__Internal")]
+    private static extern void _ImageToAlbum (string path);
+   // private static extern void _PlaySystemShutterSound ();
+#endif
+
 	public GameObject button;
 	[SerializeField]
     [Tooltip("How long must pointer be down on this object to trigger a long press")]
+    
     private float holdTime = 1f;
  
 	// Use this for initialization
+
+    const string temporaryScreenshotFilename = "screenshot.png";
 	void Start () {
 		button = GameObject.Find("Button");
 		this.onClick.AddListener(TakeShot);
@@ -19,13 +31,21 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	
 	void TakeShot(){
-		ScreenCapture.CaptureScreenshot("screenshot.png");
+		ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
+		//ScreenCapture.CaptureScreenshot("screenshot.png");
 		Debug.Log("short tap");
+		//_PlaySystemShutterSound ();
+		_ImageToAlbum (TemporaryScreenshotPath());
 	}
 	void Record(){
 		Debug.Log("long tap");
 		Everyplay.StartRecording();
 	}
+
+         string TemporaryScreenshotPath () {
+          return Application.persistentDataPath + "/" + temporaryScreenshotFilename;
+     }
+
 
 
 	// Remove all comment tags (except this one) to handle the onClick event!
