@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +16,14 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     [DllImport("__Internal")]
     private static extern void _MovieToAlbum (string path);
-   // private static extern void _PlaySystemShutterSound ();
+
+    [DllImport("__Internal")]
+    private static extern void _CameraSound ();
+    [DllImport("__Internal")]
+    private static extern void _MovieStartSound ();
+    [DllImport("__Internal")]
+    private static extern void _MovieEndSound ();
+
 #endif
 
 
@@ -67,6 +74,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     
     
     private float holdTime = 1f;
+    private bool this_is_video = false;
  
 	// Use this for initialization
 
@@ -84,10 +92,13 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		//_PlaySystemShutterSound ();
         Debug.Log("pic :" + TemporaryScreenshotPath());
 		_ImageToAlbum (TemporaryScreenshotPath());
+        _CameraSound ();
 	}
 	void Record(){
 		Debug.Log("long tap");
+        this_is_video = true;
 		Everyplay.StartRecording();
+        _MovieStartSound ();
 
 	}
 
@@ -111,8 +122,12 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (!held)
             onClick.Invoke();
 		Debug.Log("1");
-		Everyplay.StopRecording();
-    StartCoroutine(WaitUntilFinishedWriting());
+        if(this_is_video){
+            _MovieEndSound ();
+		    Everyplay.StopRecording();
+            StartCoroutine(WaitUntilFinishedWriting());
+            this_is_video = false;
+        }
     }
  
      IEnumerator WaitUntilFinishedWriting(){
