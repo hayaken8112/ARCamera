@@ -94,25 +94,23 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	
 	void TakeShot(){
-		// ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
-		//ScreenCapture.CaptureScreenshot("screenshot.png");
+		ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
 		Debug.Log("short tap");
 		//_PlaySystemShutterSound ();
-	    // _ImageToAlbum (TemporaryScreenshotPath());
+        Debug.Log("pic :" + TemporaryScreenshotPath());
+		_ImageToAlbum (TemporaryScreenshotPath());
+        _CameraSound ();
 
         // プレビュー画面のインスタンス生成
         GameObject preViewImage = InstantiateUI(previewPrefab);
         preViewImage.GetComponent<RectTransform>().offsetMin = Vector2.zero;
         preViewImage.GetComponent<RectTransform>().offsetMax = Vector2.zero;
-        preViewImage.GetComponent<PhotoPreview>().photoPath = TemporaryScreenshotPath();
+        preViewImage.GetComponent<PhotoPreview>().photoPath = TemporaryScreenshotPath(); // Previewに画像のパスを渡す
         GameObject cancelBtn = InstantiateUI(cancelButtonPrefab);
         cancelBtn.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(50, -50, 0);
         InstantiateUI(saveButtonPrefab);
         InstantiateUI(shareButtonPrefab);
 
-        Debug.Log("pic :" + TemporaryScreenshotPath());
-		_ImageToAlbum (TemporaryScreenshotPath());
-        _CameraSound ();
 	}
 
     GameObject InstantiateUI(GameObject prefab)

@@ -12,8 +12,8 @@ public class PhotoPreview : MonoBehaviour {
 	void Start () {
 		//Debug.Log(photoPath);
 		img = this.GetComponent<RawImage>();
-		// img.texture = ReadTexture(photoPath, Screen.width, Screen.height);
-		img.texture = ReadTexture("Assets/Resources/screenshot.png", Screen.width, Screen.height);
+		img.texture = ReadTexture(photoPath, Screen.width, Screen.height);
+		// img.texture = ReadTexture("Assets/Resources/screenshot.png", Screen.width, Screen.height);
 	}
 	
 	// Update is called once per frame

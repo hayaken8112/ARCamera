@@ -18,5 +18,5 @@ MonoBehaviour:
   tvosSupportEnabled: 0
   androidSupportEnabled: 0
   standaloneSupportEnabled: 0
-  testButtonsEnabled: 1
+  testButtonsEnabled: 0
   earlyInitializerEnabled: 1
