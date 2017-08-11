@@ -18,9 +18,23 @@ extern "C" void _ImageToAlbum (const char* path)
     }];
 }
 
-//extern "C" void _PlaySystemShutterSound ()
-//{
+extern "C" void _CameraSound ()
+{
     // NOTE:
     //      マナーモードや本体音量に左右されずに鳴る。
-   // AudioServicesPlaySystemSound(1108);
-//}
+       AudioServicesPlaySystemSound(1108);
+}
+
+extern "C" void _MovieStartSound ()
+{
+    // NOTE:
+    //      マナーモードや本体音量に左右されずに鳴る。
+       AudioServicesPlaySystemSound(1117);
+}
+
+extern "C" void _MovieEndSound ()
+{
+    // NOTE:
+    //      マナーモードや本体音量に左右されずに鳴る。
+       AudioServicesPlaySystemSound(1118);
+}

@@ -34,3 +34,5 @@ sysinfo.txt
 .vscode
 Assets/VSCode.meta
 Assets/VSCode
+
+.DS_Store
