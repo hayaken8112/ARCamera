@@ -5,9 +5,16 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
+using UniRx;
+using UnityEngine.SceneManagement;
 
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
 
+    public GameObject previewPrefab;
+    public GameObject saveButtonPrefab;
+    public GameObject cancelButtonPrefab;
+    public GameObject shareButtonPrefab;
+    GameObject canvas;
     #if UNITY_IPHONE
     // クラスの最初でインポート
     [DllImport("__Internal")]
@@ -28,22 +35,39 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		button = GameObject.Find("Button");
 		this.onClick.AddListener(TakeShot);
 		this.onLongPress.AddListener(Record);
+        canvas = GameObject.Find("Canvas");
 	}
 	
 	void TakeShot(){
-		ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
+		// ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
 		//ScreenCapture.CaptureScreenshot("screenshot.png");
 		Debug.Log("short tap");
 		//_PlaySystemShutterSound ();
-		_ImageToAlbum (TemporaryScreenshotPath());
+	    // _ImageToAlbum (TemporaryScreenshotPath());
+        GameObject preViewImage = InstantiateUI(previewPrefab);
+        preViewImage.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+        preViewImage.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+        preViewImage.GetComponent<PhotoPreview>().photoPath = TemporaryScreenshotPath();
+        GameObject cancelBtn = InstantiateUI(cancelButtonPrefab);
+        cancelBtn.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(50, -50, 0);
+        InstantiateUI(saveButtonPrefab);
+        InstantiateUI(shareButtonPrefab);
 	}
+
+    GameObject InstantiateUI(GameObject prefab)
+    {
+        GameObject instance = Instantiate(prefab);
+        instance.transform.SetParent(canvas.transform);
+        return instance;
+    }
+
 	void Record(){
 		Debug.Log("long tap");
 		Everyplay.StartRecording();
 	}
 
-         string TemporaryScreenshotPath () {
-          return Application.persistentDataPath + "/" + temporaryScreenshotFilename;
+    public string TemporaryScreenshotPath () {
+         return Application.persistentDataPath + "/" + temporaryScreenshotFilename;
      }
 
 
