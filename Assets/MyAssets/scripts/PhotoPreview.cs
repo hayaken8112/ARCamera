@@ -5,13 +5,11 @@ using UnityEngine.UI;
 using System.IO;
 using UniRx;
 
-public class PhotoPreview : MonoBehaviour {
+public class PhotoPreview : PreviewUI {
 
 	public string photoPath;
 	GameObject previewPanel;
 	GameObject videoPlayer;
-	bool flag = false;
-	public RenderTexture renderTexture;
     public GameObject videoPlayerPrefab;
 	RawImage img;
 	// Use this for initialization
@@ -23,6 +21,7 @@ public class PhotoPreview : MonoBehaviour {
 		img.texture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
 		videoPlayer =  Instantiate(videoPlayerPrefab);
 		StartCoroutine(SetVideo()); // 次のフレームでVideoPlayerにURLをセットする
+		StartCoroutine(InitPreviewUI());
 	}
 	
 	// Update is called once per frame
