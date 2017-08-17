@@ -11,12 +11,15 @@ public class CancelButton : MonoBehaviour{
 	GameObject saveBtn;
 	GameObject previewImg;
 	GameObject cancelBtn;
+
+	GameObject videoPlayer;
 	// Use this for initialization
 	void Start () {
 		shareBtn = GameObject.Find("ShareButton(Clone)");
 		saveBtn = GameObject.Find("SaveButton(Clone)");
 		cancelBtn = GameObject.Find("CancelButton(Clone)");
 		previewImg = GameObject.Find("PreviewPanel(Clone)");
+		videoPlayer = GameObject.Find("VideoPlayer(Clone)");
 
 		Button cancelButton = this.GetComponent<Button>();
 		cancelButton.onClick.AddListener(BackToMainScene);
@@ -32,6 +35,7 @@ public class CancelButton : MonoBehaviour{
 		Destroy(saveBtn);
 		Destroy(cancelBtn);
 		Destroy(previewImg);
+		Destroy(videoPlayer);
 	}
 
 

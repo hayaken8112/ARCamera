@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: c1be0dd76705f47eba38ecf1cc64eb63
-timeCreated: 1502372287
+timeCreated: 1502673010
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - renderTexture: {instanceID: 0}
+  - videoPlayer: {fileID: 1999047501799164, guid: 35605b01439894346b8f32cb94cfcc51,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

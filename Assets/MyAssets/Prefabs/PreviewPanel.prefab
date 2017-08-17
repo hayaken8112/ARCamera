@@ -67,6 +67,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photoPath: 
+  renderTexture: {fileID: 8400000, guid: 217b7b4ec3e8a49e7914b76bf0921ea4, type: 2}
+  videoPlayerPrefab: {fileID: 1999047501799164, guid: 35605b01439894346b8f32cb94cfcc51,
+    type: 2}
 --- !u!222 &222554332690839530
 CanvasRenderer:
   m_ObjectHideFlags: 1

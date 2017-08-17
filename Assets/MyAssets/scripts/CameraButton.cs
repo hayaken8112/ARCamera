@@ -40,8 +40,11 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
      }
 
      //動画の保存パス
-    static string GetVideoPath ()
+    public static string GetVideoPath ()
      {
+         #if UNITY_EDITOR
+         return Application.streamingAssetsPath + "/" + "test.mp4";
+         #endif
          #if UNITY_IOS
  
          var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
@@ -98,9 +101,22 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("short tap");
 		//_PlaySystemShutterSound ();
         Debug.Log("pic :" + TemporaryScreenshotPath());
-		_ImageToAlbum (TemporaryScreenshotPath());
-        _CameraSound ();
+		// _ImageToAlbum (TemporaryScreenshotPath());
+        // _CameraSound ();
 
+        MakePreviewUI();
+        
+	}
+
+    GameObject InstantiateUI(GameObject prefab)
+    {
+        GameObject instance = Instantiate(prefab);
+        instance.transform.SetParent(canvas.transform);
+        return instance;
+    }
+
+    void MakePreviewUI()
+    {
         // プレビュー画面のインスタンス生成
         GameObject preViewImage = InstantiateUI(previewPrefab);
         preViewImage.GetComponent<RectTransform>().offsetMin = Vector2.zero;
@@ -111,20 +127,13 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         InstantiateUI(saveButtonPrefab);
         InstantiateUI(shareButtonPrefab);
 
-	}
-
-    GameObject InstantiateUI(GameObject prefab)
-    {
-        GameObject instance = Instantiate(prefab);
-        instance.transform.SetParent(canvas.transform);
-        return instance;
     }
 
 	void Record(){
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
-        _MovieStartSound ();
+        // _MovieStartSound ();
 	}
 
 	// Remove all comment tags (except this one) to handle the onClick event!
@@ -148,9 +157,11 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             onClick.Invoke();
 		Debug.Log("1");
         if(this_is_video){
-            _MovieEndSound ();
+            // _MovieEndSound ();
 		    Everyplay.StopRecording();
-            StartCoroutine(WaitUntilFinishedWriting());
+            MakePreviewUI();
+
+            // StartCoroutine(WaitUntilFinishedWriting());
             this_is_video = false;
         }
     }

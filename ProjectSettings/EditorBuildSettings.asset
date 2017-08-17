@@ -27,8 +27,5 @@ EditorBuildSettings:
     path: Assets/MyAssets/Main.unity
     guid: c159b7d060d014997ace622df227d508
   - enabled: 0
-    path: Assets/MyAssets/PhotoPreview.unity
-    guid: b8f0209ec1292432ab4a2595baf3f8d9
-  - enabled: 0
-    path: Assets/MyAssets/Test.unity
-    guid: 1d938437a737449d980a736260d3892d
+    path: Assets/MyAssets/VideoPreview.unity
+    guid: 03ecd7f6922834547be25f1f0bbcbb43

@@ -3,22 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UniRx;
 
 public class PhotoPreview : MonoBehaviour {
 
 	public string photoPath;
+	GameObject previewPanel;
+	GameObject videoPlayer;
+	bool flag = false;
+	public RenderTexture renderTexture;
+    public GameObject videoPlayerPrefab;
 	RawImage img;
 	// Use this for initialization
 	void Start () {
 		//Debug.Log(photoPath);
-		img = this.GetComponent<RawImage>();
-		img.texture = ReadTexture(photoPath, Screen.width, Screen.height);
-		// img.texture = ReadTexture("Assets/Resources/screenshot.png", Screen.width, Screen.height);
+		previewPanel = GameObject.Find("PreviewPanel(Clone)");
+		img = previewPanel.GetComponent<RawImage>();
+		// img.texture = ReadTexture(photoPath, Screen.width, Screen.height);
+		img.texture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
+		videoPlayer =  Instantiate(videoPlayerPrefab);
+		StartCoroutine(SetVideo()); // 次のフレームでVideoPlayerにURLをセットする
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 	byte[] ReadPngFile(string path){
     FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -37,5 +45,10 @@ Texture ReadTexture(string path, int width, int height){
     texture.LoadImage(readBinary);
      
     return texture;
+}
+IEnumerator SetVideo(){
+	yield return null;
+	string videoPath = CameraButton.GetVideoPath();
+	videoPlayer.GetComponent<MyVideoPlayer>().SetVideoURL(videoPath);
 }
 }
