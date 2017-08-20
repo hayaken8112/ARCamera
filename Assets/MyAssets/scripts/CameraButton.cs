@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
 using UniRx;
 using UnityEngine.SceneManagement;
+using ARCamera;
 
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
 
@@ -18,11 +19,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     GameObject canvas;
     #if UNITY_IPHONE
     // クラスの最初でインポート
-    [DllImport("__Internal")]
-    private static extern void _ImageToAlbum (string path);
 
-    [DllImport("__Internal")]
-    private static extern void _MovieToAlbum (string path);
 
     [DllImport("__Internal")]
     private static extern void _CameraSound ();
@@ -32,48 +29,6 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private static extern void _MovieEndSound ();
 
 #endif
-
-
-    //画像の保存パス
-    string TemporaryScreenshotPath () {
-        return Application.persistentDataPath + "/" + temporaryScreenshotFilename;
-     }
-
-     //動画の保存パス
-    public static string GetVideoPath ()
-     {
-         #if UNITY_EDITOR
-         return Application.streamingAssetsPath + "/" + "test.mp4";
-         #endif
-         #if UNITY_IOS
- 
-         var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
-         var everyplayDir = root + "/tmp/Everyplay/session";
- 
-         #elif UNITY_ANDROID
- 
-         var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
-         var everyplayDir = root + "/sessions";
- 
-         #endif
- 
-         var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
-         var videoLocation = "";
- 
-         // Should only be one video, if there is one at all
-         foreach (var file in files) {
-             #if UNITY_ANDROID
-             videoLocation = "file://" + file.FullName;
-             #else
-             videoLocation = file.FullName;
-             #endif
-             break;
-         }
- 
-         return videoLocation;
-     }
-
-
 
 
 
@@ -88,7 +43,6 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
  
 	// Use this for initialization
 
-    const string temporaryScreenshotFilename = "screenshot.jpg";
 	void Start () {
 		button = GameObject.Find("Button");
 		this.onClick.AddListener(TakeShot);
@@ -97,37 +51,16 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	
 	void TakeShot(){
-		ScreenCapture.CaptureScreenshot(temporaryScreenshotFilename);
+		ScreenCapture.CaptureScreenshot(PathManager.temporaryScreenshotFilename);
 		Debug.Log("short tap");
-		//_PlaySystemShutterSound ();
-        Debug.Log("pic :" + TemporaryScreenshotPath());
-		// _ImageToAlbum (TemporaryScreenshotPath());
+		// _PlaySystemShutterSound ();
+        #if UNITY_IPHONE
         // _CameraSound ();
-
+        #endif
         MakePreviewUI();
-        
+        StateManager.Instance.currentState = States.PreviewPhoto;
 	}
 
-    GameObject InstantiateUI(GameObject prefab)
-    {
-        GameObject instance = Instantiate(prefab);
-        instance.transform.SetParent(canvas.transform);
-        return instance;
-    }
-
-    void MakePreviewUI()
-    {
-        // プレビュー画面のインスタンス生成
-        GameObject preViewImage = InstantiateUI(previewPrefab);
-        preViewImage.GetComponent<RectTransform>().offsetMin = Vector2.zero;
-        preViewImage.GetComponent<RectTransform>().offsetMax = Vector2.zero;
-        preViewImage.GetComponent<PhotoPreview>().photoPath = TemporaryScreenshotPath(); // Previewに画像のパスを渡す
-        GameObject cancelBtn = InstantiateUI(cancelButtonPrefab);
-        cancelBtn.GetComponent<RectTransform>().anchoredPosition3D = new Vector3(50, -50, 0);
-        InstantiateUI(saveButtonPrefab);
-        InstantiateUI(shareButtonPrefab);
-
-    }
 
 	void Record(){
 		Debug.Log("long tap");
@@ -159,6 +92,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if(this_is_video){
             // _MovieEndSound ();
 		    Everyplay.StopRecording();
+            StateManager.Instance.currentState = States.PreviewVideo;
             MakePreviewUI();
 
             // StartCoroutine(WaitUntilFinishedWriting());
@@ -166,11 +100,6 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         }
     }
  
-     IEnumerator WaitUntilFinishedWriting(){
-         yield return new WaitForSeconds( 2 );
-         Debug.Log("video: "+GetVideoPath ());
-        _MovieToAlbum (GetVideoPath ());
-    }
 
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -183,6 +112,22 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         held = true;
         onLongPress.Invoke();
 		Debug.Log("3");
+    }
+    GameObject InstantiateUI(GameObject prefab)
+    {
+        GameObject instance = Instantiate(prefab);
+        instance.transform.SetParent(canvas.transform, false);
+        return instance;
+    }
+
+    void MakePreviewUI()
+    {
+        // プレビュー画面のインスタンス生成
+        GameObject preViewImage = InstantiateUI(previewPrefab);
+        InstantiateUI(cancelButtonPrefab);
+        InstantiateUI(saveButtonPrefab);
+        InstantiateUI(shareButtonPrefab);
+
     }
 
 

@@ -21,8 +21,8 @@ public class PreviewUI : MonoBehaviour {
 		Button button = cancelBtn.GetComponent<Button>();
 		button.onClick.AsObservable().Subscribe(_ => 
 									{
-										Debug.Log(this.gameObject);
 										Destroy(this.gameObject);
+										ARCamera.StateManager.Instance.currentState = ARCamera.States.Main;
 									});
 
 	}
