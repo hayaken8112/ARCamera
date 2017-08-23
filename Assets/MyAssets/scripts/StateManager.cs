@@ -10,6 +10,9 @@ namespace ARCamera {
 public class StateManager: SingletonMonoBehaviour<StateManager>
 {
 	public States currentState {　get; set;　}
+	void Start () {
+		ARCamera.StateManager.Instance.currentState = ARCamera.States.Main;
+	}
 	
 }
 }
