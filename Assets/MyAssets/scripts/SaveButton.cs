@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UniRx;
 using ARCamera;
 
-public class SaveButton : PreviewUI {
+public class SaveButton : MonoBehaviour {
     #if UNITY_IPHONE
     [DllImport("__Internal")]
     private static extern void _MovieToAlbum (string path);
@@ -17,7 +17,6 @@ public class SaveButton : PreviewUI {
 	// Use this for initialization
 	void Start () {
 		saveBtn = this.gameObject.GetComponent<Button>();
-		StartCoroutine(InitPreviewUI());
 		if (StateManager.Instance.currentState == States.PreviewPhoto){
 			saveBtn.OnClickAsObservable().Subscribe(_ => _ImageToAlbum (PathManager.GetPhotoPath()));
 		} else if (StateManager.Instance.currentState == States.PreviewVideo){

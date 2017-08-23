@@ -750,8 +750,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1121803335}
-  - component: {fileID: 1121803336}
   - component: {fileID: 1121803337}
+  - component: {fileID: 1121803336}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -780,9 +780,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1121803334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baf8b6ab0bf7d4f5e9d041be788817f0, type: 3}
+  m_Script: {fileID: 11500000, guid: d43961bafc9b548b68291bea0daa3b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 1101707885684302, guid: d904af82289e549af9676e15258e5403,
+    type: 2}
+  saveButtonPrefab: {fileID: 1417617942968286, guid: d0e1a1ea88e69419aa6093c4e1c19c56,
+    type: 2}
+  cancelButtonPrefab: {fileID: 1405866153437708, guid: 5cabdf8dee6554fa59f388b46e1985d9,
+    type: 2}
+  shareButtonPrefab: {fileID: 1399788226881882, guid: 960f60a991054446281b482f0853c321,
+    type: 2}
 --- !u!114 &1121803337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,14 +1085,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f2d91d1c8834af58a88870bb99b52b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewPrefab: {fileID: 1101707885684302, guid: d904af82289e549af9676e15258e5403,
-    type: 2}
-  saveButtonPrefab: {fileID: 1417617942968286, guid: d0e1a1ea88e69419aa6093c4e1c19c56,
-    type: 2}
-  cancelButtonPrefab: {fileID: 1405866153437708, guid: 5cabdf8dee6554fa59f388b46e1985d9,
-    type: 2}
-  shareButtonPrefab: {fileID: 1399788226881882, guid: 960f60a991054446281b482f0853c321,
-    type: 2}
   button: {fileID: 1336288096}
   holdTime: 1
   onClick:

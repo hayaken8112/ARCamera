@@ -5,11 +5,17 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UniRx;
 
-public class CancelButton : PreviewUI {
+public class CancelButton : MonoBehaviour {
 
+	Button cancelBtn;
+	GameObject managers;
+	PreviewUIManager previewUIManager;
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(InitPreviewUI());
+		managers = GameObject.Find("Managers");
+		previewUIManager = managers.GetComponent<PreviewUIManager>();
+		cancelBtn = this.gameObject.GetComponent<Button>();
+		cancelBtn.OnClickAsObservable().Subscribe(_ => previewUIManager.DestroyPreviewUI());
 	}
 	
 

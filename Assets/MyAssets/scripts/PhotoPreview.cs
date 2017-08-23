@@ -6,7 +6,7 @@ using System.IO;
 using UniRx;
 using ARCamera;
 
-public class PhotoPreview : PreviewUI
+public class PhotoPreview : MonoBehaviour 
 {
 
     public string photoPath;
@@ -26,7 +26,6 @@ public class PhotoPreview : PreviewUI
             videoPlayer = Instantiate(videoPlayerPrefab);
             StartCoroutine(SetVideo()); // 次のフレームでVideoPlayerにURLをセットする
         }
-		StartCoroutine(InitPreviewUI());
     }
 
     // Update is called once per frame

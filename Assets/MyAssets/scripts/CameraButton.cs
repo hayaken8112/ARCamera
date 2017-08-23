@@ -11,12 +11,9 @@ using UnityEngine.SceneManagement;
 using ARCamera;
 
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
+    GameObject manager;
+    PreviewUIManager previewUIManager;
 
-    public GameObject previewPrefab;
-    public GameObject saveButtonPrefab;
-    public GameObject cancelButtonPrefab;
-    public GameObject shareButtonPrefab;
-    GameObject canvas;
     #if UNITY_IPHONE
     // クラスの最初でインポート
 
@@ -44,10 +41,11 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	// Use this for initialization
 
 	void Start () {
+        manager = GameObject.Find("Managers");
+        previewUIManager = manager.GetComponent<PreviewUIManager>();
 		button = GameObject.Find("Button");
 		this.onClick.AddListener(TakeShot);
 		this.onLongPress.AddListener(Record);
-        canvas = GameObject.Find("Canvas");
 	}
 	
 	void TakeShot(){
@@ -57,7 +55,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         #if UNITY_IPHONE
         // _CameraSound ();
         #endif
-        MakePreviewUI();
+        previewUIManager.MakePreviewUI();
         StateManager.Instance.currentState = States.PreviewPhoto;
 	}
 
@@ -93,7 +91,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             // _MovieEndSound ();
 		    Everyplay.StopRecording();
             StateManager.Instance.currentState = States.PreviewVideo;
-            MakePreviewUI();
+            previewUIManager.MakePreviewUI();
 
             // StartCoroutine(WaitUntilFinishedWriting());
             this_is_video = false;
@@ -112,22 +110,6 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         held = true;
         onLongPress.Invoke();
 		Debug.Log("3");
-    }
-    GameObject InstantiateUI(GameObject prefab)
-    {
-        GameObject instance = Instantiate(prefab);
-        instance.transform.SetParent(canvas.transform, false);
-        return instance;
-    }
-
-    void MakePreviewUI()
-    {
-        // プレビュー画面のインスタンス生成
-        GameObject preViewImage = InstantiateUI(previewPrefab);
-        InstantiateUI(cancelButtonPrefab);
-        InstantiateUI(saveButtonPrefab);
-        InstantiateUI(shareButtonPrefab);
-
     }
 
 
