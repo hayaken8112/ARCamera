@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ARCamera {
 public class PathManager : SingletonMonoBehaviour<PathManager> {
-    public const string temporaryScreenshotFilename = "screenshot.jpg";
+    public const string temporaryScreenshotFilename = "screenshot.png";
     public static string GetPhotoPath () {
 		string path;
 		#if UNITY_EDITOR
@@ -18,19 +18,15 @@ public class PathManager : SingletonMonoBehaviour<PathManager> {
      }
 	public static string GetVideoPath ()
      {
+		 string everyplayDir;
          #if UNITY_EDITOR
          return Application.streamingAssetsPath + "/" + "test.mp4";
          #endif
          #if UNITY_IOS
  
          var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
-         var everyplayDir = root + "/tmp/Everyplay/session";
- 
-         #elif UNITY_ANDROID
- 
-         var root = new DirectoryInfo(Application.temporaryCachePath).FullName;
-         var everyplayDir = root + "/sessions";
- 
+         everyplayDir = root + "/tmp/Everyplay/session";
+  
          #endif
  
          var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);

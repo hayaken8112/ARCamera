@@ -13,6 +13,8 @@ using ARCamera;
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
     GameObject manager;
     PreviewUIManager previewUIManager;
+    ScreenShot screenshot;
+
 
     #if UNITY_IPHONE
     // クラスの最初でインポート
@@ -43,13 +45,14 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	void Start () {
         manager = GameObject.Find("Managers");
         previewUIManager = manager.GetComponent<PreviewUIManager>();
+        screenshot = this.gameObject.GetComponent<ScreenShot>();
 		button = GameObject.Find("Button");
 		this.onClick.AddListener(TakeShot);
 		this.onLongPress.AddListener(Record);
 	}
 	
 	void TakeShot(){
-		ScreenCapture.CaptureScreenshot(PathManager.temporaryScreenshotFilename);
+		screenshot.CaptchaScreen();
 		Debug.Log("short tap");
 		// _PlaySystemShutterSound ();
         #if UNITY_IPHONE
