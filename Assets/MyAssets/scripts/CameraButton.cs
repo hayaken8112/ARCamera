@@ -49,6 +49,12 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 	}
 	
 	void TakeShot(){
+
+        if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)){
+            Debug.Log("is On Button");
+        } else {
+            Debug.Log("not on Button");
+        }
 		ScreenCapture.CaptureScreenshot(PathManager.temporaryScreenshotFilename);
 		Debug.Log("short tap");
 		// _PlaySystemShutterSound ();

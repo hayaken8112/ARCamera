@@ -33,6 +33,7 @@ public class MyVideoPlayer : MonoBehaviour
 
         // This will cause our scene to be visible through the video being played.
         videoPlayer.targetCameraAlpha = 1.0f;
+        videoPlayer.aspectRatio = UnityEngine.Video.VideoAspectRatio.Stretch;
 
         // Set the video to play. URL supports local absolute or relative paths.
         // Here, using absolute.
