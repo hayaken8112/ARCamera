@@ -551,7 +551,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab6e4e6f71ed84120af38d3d8291224d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1771331681443754, guid: 324ef0563a36f4a9081b6e5f3ec2889e, type: 2}
+  prefab1: {fileID: 1771331681443754, guid: 324ef0563a36f4a9081b6e5f3ec2889e, type: 2}
+  prefab2: {fileID: 1319291906729752, guid: a28c917aa10b04d4fbb922ff944820cf, type: 2}
 --- !u!4 &738875619
 Transform:
   m_ObjectHideFlags: 0
@@ -576,7 +577,7 @@ GameObject:
   - component: {fileID: 826026399}
   - component: {fileID: 826026398}
   - component: {fileID: 826026397}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ObjectButton1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1088,7 +1089,7 @@ GameObject:
   - component: {fileID: 1266873526}
   - component: {fileID: 1266873525}
   - component: {fileID: 1266873524}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1239,7 +1240,7 @@ GameObject:
   - component: {fileID: 1289337136}
   - component: {fileID: 1289337138}
   - component: {fileID: 1289337137}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1277,7 +1278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1313,7 +1314,7 @@ GameObject:
   - component: {fileID: 1310329360}
   - component: {fileID: 1310329362}
   - component: {fileID: 1310329361}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1351,7 +1352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1389,7 +1390,8 @@ GameObject:
   - component: {fileID: 1336288099}
   - component: {fileID: 1336288101}
   - component: {fileID: 1336288098}
-  m_Layer: 5
+  - component: {fileID: 1336288102}
+  m_Layer: 8
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1511,6 +1513,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+--- !u!114 &1336288102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1336288096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a40184001f8204c408039a38fa78bdbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArCam: {fileID: 1552606293}
 --- !u!1 &1342615505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,7 +1652,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1763,7 +1777,7 @@ GameObject:
   - component: {fileID: 1841784822}
   - component: {fileID: 1841784824}
   - component: {fileID: 1841784823}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1801,7 +1815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1827,6 +1841,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1841784821}
+--- !u!1001 &1853004588
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: df43b2432e99a43c68ea229e12aaec45, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1906146040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,7 +1937,7 @@ GameObject:
   - component: {fileID: 1930641902}
   - component: {fileID: 1930641901}
   - component: {fileID: 1930641900}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: ObjectButton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
