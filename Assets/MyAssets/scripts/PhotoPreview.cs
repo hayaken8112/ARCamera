@@ -9,7 +9,6 @@ using ARCamera;
 public class PhotoPreview : MonoBehaviour 
 {
 
-    public string photoPath;
     GameObject previewPanel;
     GameObject videoPlayer;
     public GameObject videoPlayerPrefab;
@@ -17,14 +16,19 @@ public class PhotoPreview : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-		previewPanel = GameObject.Find("PreviewPanel(Clone)");
-		img = previewPanel.GetComponent<RawImage>();
+		img = this.gameObject.GetComponent<RawImage>();
         if (StateManager.Instance.currentState == States.PreviewPhoto) {
             img.texture = ReadTexture(PathManager.GetPhotoPath(), Screen.width, Screen.height);
         } else if (StateManager.Instance.currentState == States.PreviewVideo) {
             img.texture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
             videoPlayer = Instantiate(videoPlayerPrefab);
             StartCoroutine(SetVideo()); // 次のフレームでVideoPlayerにURLをセットする
+            /* Observable.EveryUpdate().FirstOrDefault()
+                                    .Subscribe(_ => {
+                                        new WaitForSeconds(2);
+                                        string videoPath = PathManager.GetVideoPath();
+                                        videoPlayer.GetComponent<MyVideoPlayer>().SetVideoURL(videoPath);
+                                    });*/
         }
     }
 
@@ -54,7 +58,7 @@ public class PhotoPreview : MonoBehaviour
     }
     IEnumerator SetVideo()
     {
-        yield return null;
+        yield return new WaitForSeconds(1);
         string videoPath = PathManager.GetVideoPath();
         videoPlayer.GetComponent<MyVideoPlayer>().SetVideoURL(videoPath);
     }

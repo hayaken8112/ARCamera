@@ -10,7 +10,8 @@ public class PathManager : SingletonMonoBehaviour<PathManager> {
 		string path;
 		#if UNITY_EDITOR
 		path = Application.streamingAssetsPath + "/" + "screenshot.png";
-		#else
+        #endif
+		#if UNITY_IOS
 
         path = Application.persistentDataPath + "/" + temporaryScreenshotFilename;
 		#endif
@@ -26,7 +27,7 @@ public class PathManager : SingletonMonoBehaviour<PathManager> {
  
          var root = new DirectoryInfo(Application.persistentDataPath).Parent.FullName;
          everyplayDir = root + "/tmp/Everyplay/session";
-  
+
          #endif
  
          var files = new DirectoryInfo(everyplayDir).GetFiles("*.mp4", SearchOption.AllDirectories);
