@@ -18,19 +18,11 @@ public class ARObjectEditor : MonoBehaviour {
 		sliderHandle = GameObject.Find("Handle");
 		var pointerDownTrigger = sliderHandle.AddComponent<ObservablePointerDownTrigger>();
 		var beginDragTrigger = sliderHandle.AddComponent<ObservableBeginDragTrigger>();
-		// pointerDownTrigger.OnPointerDownAsObservable().Subscribe(_ => lastARObject = ARCamera.ARObjectGenerator.Instance.GetLastARObject());
 		beginDragTrigger.OnBeginDragAsObservable().Subscribe(pointerEventData => defaultObjRot = lastARObject.transform.rotation.eulerAngles);
 		slider.OnDragAsObservable().Subscribe(pointerEventData => 
 		{
-			Debug.Log("is dragged");
-			/* 
-			float dragWidth = pointerEventData.position.x - dragStartPos.x;
-			Debug.Log(dragWidth);
 			if (lastARObject != null) {
-				lastARObject.transform.Rotate(0, dragWidth, 0);
-			}
-			*/
-			if (lastARObject != null) {
+				// スライドバーの中心からの変化分だけ回転させる。
 				float diff = (slider.value - 0.5f) * 360;
 				lastARObject.transform.rotation = Quaternion.Euler(defaultObjRot.x, defaultObjRot.y + diff, defaultObjRot.z);
 			}
@@ -39,14 +31,10 @@ public class ARObjectEditor : MonoBehaviour {
 		ARCamera.ARObjectGenerator.Instance.OnObjectGenerated
 		.Subscribe(ARObj => 
 		{
+			// オブジェクトが増減すると、スライダーの位置を中心に戻す。
 			slider.value = 0.5f;
 			lastARObject = ARObj;
 		});
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 	
 }

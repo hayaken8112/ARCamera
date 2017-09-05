@@ -6,43 +6,47 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UniRx;
 using UniRx.Triggers;
+using System.Linq;
 
 namespace ARCamera
 {
     public class ARObjectGenerator : SingletonMonoBehaviour<ARObjectGenerator>
     {
         GameObject[] prefabs;
+        GameObject canvas;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
-		private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
-		public IObservable<GameObject> OnObjectGenerated
-		{
-			get { return ARObjectSubject; }
-		}
-        Button btn1;
-        Button btn2;
+        private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
+        public IObservable<GameObject> OnObjectGenerated
+        {
+            get { return ARObjectSubject; }
+        }
+        public GameObject objBtnPrefab;
         Button undoBtn;
         int nextARObjIndex = 0;
         bool isOnGameObject = true;
         void Start()
         {
-            btn1 = GameObject.Find("ObjectButton1").GetComponent<Button>();
-            btn2 = GameObject.Find("ObjectButton2").GetComponent<Button>();
+            canvas = GameObject.Find("Canvas");
+
             undoBtn = GameObject.Find("UndoButton").GetComponent<Button>();
+            undoBtn.OnClickAsObservable().Subscribe(_ =>
+            {
+                if (ARObjectStack.Count > 0)
+                {
+                    Destroy(ARObjectStack.Pop());
+                    ARObjectSubject.OnNext(GetLastARObject());
+                }
+            });
 
-            btn1.OnClickAsObservable().Subscribe(_ => nextARObjIndex = 0);
-            btn2.OnClickAsObservable().Subscribe(_ => nextARObjIndex = 1);
-            undoBtn.OnClickAsObservable().Subscribe(_ => {
-				Destroy(ARObjectStack.Pop());
-				ARObjectSubject.OnNext(GetLastARObject());
-				});
-            prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
+			LoadPrefab();
 
+			// Update
             this.UpdateAsObservable()
-			.Where(_ => Input.touchCount == 1)
-			.Subscribe(_ =>
+            .Where(_ => Input.touchCount == 1)
+            .Subscribe(_ =>
             {
                 isOnGameObject = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
-                if (isOnGameObject) return;
+                if (isOnGameObject) return; // UI上をタッチした場合は何もしない
 
                 isOnGameObject = true;
                 var touch = Input.GetTouch(0);
@@ -88,10 +92,10 @@ namespace ARCamera
                     Quaternion rot;
                     pos = UnityARMatrixOps.GetPosition(hitResult.worldTransform);
                     rot = UnityARMatrixOps.GetRotation(hitResult.worldTransform);
-					GameObject newGameObject = Instantiate(prefabs[prefabIndex], pos, rot);
+                    GameObject newGameObject = Instantiate(prefabs[prefabIndex], pos, rot);
                     // ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
                     ARObjectStack.Push(newGameObject); // Generate an ARObject and push to the stack
-					ARObjectSubject.OnNext(newGameObject);
+                    ARObjectSubject.OnNext(newGameObject);
                     Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", pos.x, pos.y, pos.z));
                     return true;
                 }
@@ -100,49 +104,27 @@ namespace ARCamera
         }
 
         public GameObject GetLastARObject()
-		{
-			if (ARObjectStack.Count == 0) return null;
-			return ARObjectStack.Peek();
-		}
-        /* 
-		// Update is called once per frame
-		void Update () {
-			RawImage btnImage1 = GameObject.Find("ObjectButton1").GetComponent<RawImage>();
-			btnImage1.texture =  AssetPreview.GetAssetPreview(prefabs[0]);
-			if (Input.touchCount > 0)
-			{
-				isOnGameObject = EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
-				if (isOnGameObject == false){
-				isOnGameObject = true;
-				var touch = Input.GetTouch(0);
-				if (touch.phase == TouchPhase.Began)
-				{
-					var screenPosition = Camera.main.ScreenToViewportPoint(touch.position);
-					ARPoint point = new ARPoint {
-						x = screenPosition.x,
-						y = screenPosition.y
-					};
+        {
+            if (ARObjectStack.Count == 0) return null;
+            return ARObjectStack.Peek();
+        }
+        void LoadPrefab()
+        {
+            prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
+            for (int i = 0; i < prefabs.Count(); i++)
+            {
+                GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
+                btn.transform.SetParent(canvas.transform, false);
+                btn.transform.Translate(0, 100 * i, 0);
+                int temp = i;
+				// 各ボタンがクリックされたときの処理
+                btn.GetComponent<Button>().OnClickAsObservable()
+                .Subscribe(_ =>
+                {
+                    nextARObjIndex = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
+                });
+            }
 
-					// prioritize reults types
-					ARHitTestResultType[] resultTypes = {
-						ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
-						// if you want to use infinite planes use this:
-						//ARHitTestResultType.ARHitTestResultTypeExistingPlane,
-						ARHitTestResultType.ARHitTestResultTypeHorizontalPlane, 
-						ARHitTestResultType.ARHitTestResultTypeFeaturePoint
-					}; 
-
-					foreach (ARHitTestResultType resultType in resultTypes)
-					{
-						if (HitTestWithResultType (point, resultType, nextARObjIndex))
-						{
-							return;
-						}
-					}
-				}
-				}
-			}
-		}
-		*/
+        }
     }
 }
