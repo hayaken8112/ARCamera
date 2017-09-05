@@ -13,6 +13,11 @@ namespace ARCamera
     {
         GameObject[] prefabs;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
+		private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
+		public IObservable<GameObject> OnObjectGenerated
+		{
+			get { return ARObjectSubject; }
+		}
         Button btn1;
         Button btn2;
         Button undoBtn;
@@ -26,7 +31,10 @@ namespace ARCamera
 
             btn1.OnClickAsObservable().Subscribe(_ => nextARObjIndex = 0);
             btn2.OnClickAsObservable().Subscribe(_ => nextARObjIndex = 1);
-            undoBtn.OnClickAsObservable().Subscribe(_ => Destroy(ARObjectStack.Pop()));
+            undoBtn.OnClickAsObservable().Subscribe(_ => {
+				Destroy(ARObjectStack.Pop());
+				ARObjectSubject.OnNext(GetLastARObject());
+				});
             prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
 
             this.UpdateAsObservable()
@@ -80,7 +88,10 @@ namespace ARCamera
                     Quaternion rot;
                     pos = UnityARMatrixOps.GetPosition(hitResult.worldTransform);
                     rot = UnityARMatrixOps.GetRotation(hitResult.worldTransform);
-                    ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
+					GameObject newGameObject = Instantiate(prefabs[prefabIndex], pos, rot);
+                    // ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
+                    ARObjectStack.Push(newGameObject); // Generate an ARObject and push to the stack
+					ARObjectSubject.OnNext(newGameObject);
                     Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", pos.x, pos.y, pos.z));
                     return true;
                 }
