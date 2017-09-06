@@ -6,15 +6,17 @@ using UniRx;
 public class MyVideoPlayer : MonoBehaviour
 {
     UnityEngine.Video.VideoPlayer videoPlayer;
-    public GameObject slider;
 
     private Subject<string> videoURLSubject = new Subject<string>();
     public IObservable<string> OnVideoURLChanged
     {
         get { return videoURLSubject; }
     }
-    MySlider sld;
-    private bool sldIsPressed = false;
+    /* slider
+    // public GameObject slider;
+    // MySlider sld;
+    // private bool sldIsPressed = false;
+    */
     void Start()
     {
         // Will attach a VideoPlayer to the main camera.
@@ -61,6 +63,7 @@ public class MyVideoPlayer : MonoBehaviour
     void Update(){
         //sld.value = videoPlayer.time
         //Debug.Log(videoPlayer.frameCount);
+        /* 
         if (slider != null && videoPlayer.isPlaying){
         if (sld.isPressed != true && videoPlayer.frameCount > 0) {
             SetSlider(videoPlayer.frame, videoPlayer.frameCount);
@@ -75,8 +78,10 @@ public class MyVideoPlayer : MonoBehaviour
         }
         Debug.Log(sld.isPressed);
     }
+        */
     }
 
+/*  slider
     void SetSlider(long currentFrame, ulong numOfFrame)
     {
         sld.value = (float)currentFrame / numOfFrame;
@@ -86,6 +91,7 @@ public class MyVideoPlayer : MonoBehaviour
     {
         videoPlayer.frame = (long)(sld.value * videoPlayer.frameCount);
     }
+*/
 
     public void SetVideoURL(string s){
         videoURLSubject.OnNext(s);

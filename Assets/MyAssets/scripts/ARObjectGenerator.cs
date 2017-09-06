@@ -12,6 +12,8 @@ namespace ARCamera
 {
     public class ARObjectGenerator : SingletonMonoBehaviour<ARObjectGenerator>
     {
+        public enum KindOfObject { Object, Text };
+        public KindOfObject kindOfnextObject { get; set; }
         GameObject[] prefabs;
         GameObject canvas;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
@@ -23,6 +25,7 @@ namespace ARCamera
         public GameObject objBtnPrefab;
         Button undoBtn;
         int nextARObjIndex = 0;
+		public GameObject nextARObject;
         bool isOnGameObject = true;
         void Start()
         {
@@ -38,9 +41,11 @@ namespace ARCamera
                 }
             });
 
-			LoadPrefab();
+            LoadPrefab();
 
-			// Update
+			kindOfnextObject = KindOfObject.Object;
+
+            // Update
             this.UpdateAsObservable()
             .Where(_ => Input.touchCount == 1)
             .Subscribe(_ =>
@@ -70,9 +75,19 @@ namespace ARCamera
 
                     foreach (ARHitTestResultType resultType in resultTypes)
                     {
-                        if (HitTestWithResultType(point, resultType, nextARObjIndex))
+                        if (kindOfnextObject == KindOfObject.Object)
                         {
-                            return;
+                            if (HitTestWithResultType(point, resultType, nextARObjIndex))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (HitTestWithResultType(point, resultType, nextARObject))
+                            {
+                                return;
+                            }
                         }
                     }
                 }
@@ -102,6 +117,29 @@ namespace ARCamera
             }
             return false;
         }
+        bool HitTestWithResultType(ARPoint point, ARHitTestResultType resultTypes, GameObject nextObject)
+        {
+            List<ARHitTestResult> hitResults = UnityARSessionNativeInterface.GetARSessionNativeInterface().HitTest(point, resultTypes);
+            if (hitResults.Count > 0)
+            {
+                foreach (var hitResult in hitResults)
+                {
+                    Debug.Log("Got hit!");
+                    Vector3 pos;
+                    Quaternion rot;
+                    pos = UnityARMatrixOps.GetPosition(hitResult.worldTransform);
+                    rot = UnityARMatrixOps.GetRotation(hitResult.worldTransform);
+                    nextObject.transform.position = pos;
+                    nextObject.transform.rotation = rot;
+                    // ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
+                    ARObjectStack.Push(nextObject); // Generate an ARObject and push to the stack
+                    ARObjectSubject.OnNext(nextObject);
+                    Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", pos.x, pos.y, pos.z));
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public GameObject GetLastARObject()
         {
@@ -117,11 +155,12 @@ namespace ARCamera
                 btn.transform.SetParent(canvas.transform, false);
                 btn.transform.Translate(0, 100 * i, 0);
                 int temp = i;
-				// 各ボタンがクリックされたときの処理
+                // 各ボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
                 .Subscribe(_ =>
                 {
                     nextARObjIndex = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
+					kindOfnextObject = KindOfObject.Object;
                 });
             }
 
