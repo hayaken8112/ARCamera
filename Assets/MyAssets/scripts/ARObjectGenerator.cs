@@ -148,11 +148,15 @@ namespace ARCamera
         }
         void LoadPrefab()
         {
+            GameObject content;
+            content = canvas.transform.Find("Scroll View").Find("Viewport").Find("Content").gameObject;
+            //content = this.transform.Find("Canvas/Scroll View/Viewport/Content").gameObject;
+            Debug.Log(content.tag);
             prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
             for (int i = 0; i < prefabs.Count(); i++)
             {
                 GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
-                btn.transform.SetParent(canvas.transform, false);
+                btn.transform.SetParent(content.transform, false);
                 btn.transform.Translate(0, 100 * i, 0);
                 int temp = i;
                 // 各ボタンがクリックされたときの処理
