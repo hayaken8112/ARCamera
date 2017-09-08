@@ -151,7 +151,7 @@ namespace ARCamera
             GameObject content;
             content = canvas.transform.Find("Scroll View").Find("Viewport").Find("Content").gameObject;
             //content = this.transform.Find("Canvas/Scroll View/Viewport/Content").gameObject;
-            Debug.Log(content.tag);
+            //Debug.Log(content.tag);
             prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
             for (int i = 0; i < prefabs.Count(); i++)
             {
