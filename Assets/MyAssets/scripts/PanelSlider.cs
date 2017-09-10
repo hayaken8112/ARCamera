@@ -21,6 +21,7 @@ public class PanelSlider : MonoBehaviour {
     private IEnumerator StartSlidePanel( bool isSlideIn ){
         float startTime = Time.time;    // 開始時間
         Vector3 startPos = transform.localPosition;  // 開始位置
+        Debug.Log(startPos);
         Vector3 moveDistance;            // 移動距離および方向
  
         if( isSlideIn ){

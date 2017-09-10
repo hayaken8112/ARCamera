@@ -157,7 +157,6 @@ namespace ARCamera
             {
                 GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
                 btn.transform.SetParent(content.transform, false);//ボタンをconyentの子に入れる
-                btn.transform.Translate(0, 100 * i, 0);
                 int temp = i;
                 // 各ボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
