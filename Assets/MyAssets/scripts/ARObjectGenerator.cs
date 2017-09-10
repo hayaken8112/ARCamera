@@ -155,7 +155,15 @@ namespace ARCamera
             prefabs = Resources.LoadAll<GameObject>("Prefab"); // Resources/Prefab内のPrefabをロード
             for (int i = 0; i < prefabs.Count(); i++)
             {
+                string prefab_name = prefabs[i].name;
+                Texture2D prefab_image = Resources.Load<Texture2D>( "Captures/" + prefab_name);
+                Debug.Log(prefab_image);
+
                 GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
+                Debug.Log(btn);
+                RawImage img = btn.GetComponent<RawImage>();
+                Debug.Log(img);
+                img.texture = prefab_image;
                 btn.transform.SetParent(content.transform, false);//ボタンをconyentの子に入れる
                 int temp = i;
                 // 各ボタンがクリックされたときの処理
