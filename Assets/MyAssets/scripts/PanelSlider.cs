@@ -17,12 +17,18 @@ public class PanelSlider : MonoBehaviour {
     public void SlideOut(){
         StartCoroutine( StartSlidePanel(false) );
     }
+    public void Update() {
+        Debug.Log(transform.localPosition);
+    }
  
     private IEnumerator StartSlidePanel( bool isSlideIn ){
         float startTime = Time.time;    // 開始時間
-        Vector3 startPos = transform.localPosition;  // 開始位置
+        //Vector3 startPos = transform.localPosition;  // 開始位置
+        var rect = this.GetComponent<RectTransform>();
+        Vector3 startPos = rect.anchoredPosition;  // 開始位置
         Vector3 moveDistance;            // 移動距離および方向
- 
+        Debug.Log("localPos" + rect.localPosition);
+        Debug.Log("position" + rect.position);
         if( isSlideIn ){
             moveDistance = (inPosition - startPos);
         }
@@ -31,9 +37,9 @@ public class PanelSlider : MonoBehaviour {
         }
  
         while((Time.time - startTime) < duration){
-            transform.localPosition = startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration);
+            rect.anchoredPosition = startPos + moveDistance * animCurve.Evaluate((Time.time - startTime) / duration);
             yield return 0;        // 1フレーム後、再開
         }
-        transform.localPosition = startPos + moveDistance;
+        rect.anchoredPosition = startPos + moveDistance;
     }
 }
