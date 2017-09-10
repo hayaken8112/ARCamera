@@ -10,7 +10,7 @@ public class CaptureCreater : EditorWindow
     // このディレクトリ以下のprefabのキャプチャを全て取得
     UnityEngine.Object searchDirectory;
     List<GameObject> objList = new List<GameObject>();
-    string dirPath = "Captures/"; // 出力先ディレクトリ(Assets/Captures/以下に出力されます)
+    string dirPath = "Assets/Resources/Captures/"; // 出力先ディレクトリ(Assets/Captures/以下に出力されます)
     int width = 100; // キャプチャ画像の幅
     int height = 100; // キャプチャ画像の高さ
 
@@ -81,15 +81,18 @@ public class CaptureCreater : EditorWindow
 
     // List内のGameObjectを配置しつつ、キャプチャを取得
     IEnumerator Exec(List<GameObject> objList){
+                foreach(GameObject obj in objList){Debug.Log(AssetPreview.GetAssetPreview(obj));}
+
         foreach(GameObject obj in objList)
         {
             Debug.Log(obj.name);
+            Debug.Log(obj);
             Texture2D texture2D = AssetPreview.GetAssetPreview(obj);
             byte[] bytes = texture2D.EncodeToPNG();
             System.IO.File.WriteAllBytes( dirPath  + obj.name + ".png", bytes );
 
 
-            yield return new EditorCoroutine.WaitForSeconds(1.0f);
+            yield return new EditorCoroutine.WaitForSeconds(0.1f);
 
         }
     }
