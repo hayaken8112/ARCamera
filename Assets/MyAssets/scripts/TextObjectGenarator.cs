@@ -14,11 +14,6 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 	GameObject inputFieldInstance;
 	Button textButton;
 	public GameObject textObject { get; set; }
-	private Subject<GameObject> TextObjectSubject = new Subject<GameObject>();
-	public IObservable<GameObject> OnTextObjectGenerated
-	{
-		get { return TextObjectSubject; }
-	}
 	// Use this for initialization
 	void Start () {
 		canvas = GameObject.Find("Canvas");
@@ -26,7 +21,11 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 		textButton.OnClickAsObservable().Subscribe(_ => {
 			inputFieldInstance = Instantiate(inputFieldPrefab);
 			inputFieldInstance.transform.SetParent(canvas.transform, false);
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.TextEdit;
 		});
+		ARCamera.StateManager.Instance.OnStatesChanged
+		.Where(state => state == ARCamera.States.Main)
+		.Subscribe(_ => Destroy(inputFieldInstance));
 	}
 	
 	// Update is called once per frame

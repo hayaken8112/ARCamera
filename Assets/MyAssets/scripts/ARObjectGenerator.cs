@@ -25,7 +25,7 @@ namespace ARCamera
         public GameObject objBtnPrefab;
         Button undoBtn;
         int nextARObjIndex = 0;
-		public GameObject nextARObject;
+		public ReactiveProperty<GameObject> nextARObjectRP = new ReactiveProperty<GameObject>();
         bool isOnGameObject = true;
         void Start()
         {
@@ -44,13 +44,17 @@ namespace ARCamera
             LoadPrefab();
 
 			kindOfnextObject = KindOfObject.Object;
-
+			nextARObjectRP.Subscribe(nextObj => {
+				ARObjectStack.Push(nextObj);
+				ARObjectSubject.OnNext(nextObj);
+			});
             // Update
             this.UpdateAsObservable()
-            .Where(_ => Input.touchCount == 1)
+            .Where(_ => Input.touchCount == 1 && StateManager.Instance.currentState == States.Main)
             .Subscribe(_ =>
             {
                 isOnGameObject = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+				Debug.Log("main isOngameObj" + isOnGameObject);
                 if (isOnGameObject) return; // UI上をタッチした場合は何もしない
 
                 isOnGameObject = true;
@@ -84,7 +88,7 @@ namespace ARCamera
                         }
                         else
                         {
-                            if (HitTestWithResultType(point, resultType, nextARObject))
+                            if (HitTestWithResultType(point, resultType, nextARObjectRP.Value))
                             {
                                 return;
                             }
@@ -132,8 +136,6 @@ namespace ARCamera
                     nextObject.transform.position = pos;
                     nextObject.transform.rotation = rot;
                     // ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
-                    ARObjectStack.Push(nextObject); // Generate an ARObject and push to the stack
-                    ARObjectSubject.OnNext(nextObject);
                     Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", pos.x, pos.y, pos.z));
                     return true;
                 }

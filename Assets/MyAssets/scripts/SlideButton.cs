@@ -20,18 +20,26 @@ public class SlideButton : MonoBehaviour {
 	public void Slide(){
 		if(slidein){
 			panelslider.SlideIn();
-			slidein = false;}
-		else{
+			slidein = false;
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+		} else {
 			panelslider.SlideOut();
 			slidein = true;
-			}
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.Main;
+		}
 	}
 
 	void Start () {
 		scrollview = GameObject.Find("Scroll View");
 		slidebutton = this.gameObject.GetComponent<Button>();
 		panelslider = scrollview.GetComponent<PanelSlider>();
-		slidebutton.OnClickAsObservable().Subscribe(_ => Slide());
+		slidebutton.OnClickAsObservable().Subscribe(_ => {
+			panelslider.SlideIn();
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+		});
+		ARCamera.StateManager.Instance.OnStatesChanged
+		.Where(state => state == ARCamera.States.Main)
+		.Subscribe(_ => panelslider.SlideOut());
 
 
 	}

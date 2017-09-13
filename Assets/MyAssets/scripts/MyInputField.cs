@@ -25,15 +25,13 @@ public class MyInputField : MonoBehaviour {
 			FlyingText.UpdateObject(ARCamera.TextObjectGenarator.Instance.textObject, inputText);
 		});
 		inputField.OnEndEditAsObservable()
-		.Where(text => !String.IsNullOrEmpty(text))
-		.Subscribe(_ => {
-			ARCamera.ARObjectGenerator.Instance.kindOfnextObject = ARCamera.ARObjectGenerator.KindOfObject.Text;
-			ARCamera.ARObjectGenerator.Instance.nextARObject = ARCamera.TextObjectGenarator.Instance.textObject;
-			/*
-			textObject = FlyingText.GetObject("" , new Vector3(0,0,1) , Quaternion.identity);
-			inputField.text = "";
-			*/
-			Destroy(this.gameObject);
+		.Subscribe(text => {
+			if (String.IsNullOrEmpty(text)) {
+				Destroy(this.gameObject);
+			} else {
+				ARCamera.ARObjectGenerator.Instance.kindOfnextObject = ARCamera.ARObjectGenerator.KindOfObject.Text;
+				ARCamera.ARObjectGenerator.Instance.nextARObjectRP.Value = ARCamera.TextObjectGenarator.Instance.textObject;
+			}
 		});
 	}
 	
