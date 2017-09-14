@@ -18,18 +18,16 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 	void Start () {
 		canvas = GameObject.Find("Canvas");
 		textButton = GameObject.Find("TextButton").GetComponent<Button>();
+		// textButtonが押されたときの処理
 		textButton.OnClickAsObservable().Subscribe(_ => {
 			inputFieldInstance = Instantiate(inputFieldPrefab);
 			inputFieldInstance.transform.SetParent(canvas.transform, false);
 			ARCamera.StateManager.Instance.currentState = ARCamera.States.TextEdit;
 		});
+		// Mainに戻ったとき
 		ARCamera.StateManager.Instance.OnStatesChanged
 		.Where(state => state == ARCamera.States.Main)
 		.Subscribe(_ => Destroy(inputFieldInstance));
-	}
-	
-	// Update is called once per frame
-	void Update () {
 	}
 }
 } // ARCamera

@@ -32,23 +32,27 @@ namespace ARCamera
             canvas = GameObject.Find("Canvas");
 
             undoBtn = GameObject.Find("UndoButton").GetComponent<Button>();
+			// undoButtonの処理
             undoBtn.OnClickAsObservable().Subscribe(_ =>
             {
                 if (ARObjectStack.Count > 0)
                 {
-                    Destroy(ARObjectStack.Pop());
-                    ARObjectSubject.OnNext(GetLastARObject());
+                    Destroy(ARObjectStack.Pop()); // Stackから一つ消す
+                    ARObjectSubject.OnNext(GetLastARObject()); // Objectが減ったことを通知
                 }
             });
 
             LoadPrefab();
 
 			kindOfnextObject = KindOfObject.Object;
+			// 次のTextObjectが変更されたときの処理
 			nextARObjectRP.Subscribe(nextObj => {
 				ARObjectStack.Push(nextObj);
 				ARObjectSubject.OnNext(nextObj);
 			});
+
             // Update
+			// Main状態でのオブジェクトの配置処理
             this.UpdateAsObservable()
             .Where(_ => Input.touchCount == 1 && StateManager.Instance.currentState == States.Main)
             .Subscribe(_ =>
@@ -159,16 +163,14 @@ namespace ARCamera
             {
                 string prefab_name = prefabs[i].name;
                 Texture2D prefab_image = Resources.Load<Texture2D>( "Captures/" + prefab_name);
-                Debug.Log(prefab_image);
 
                 GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
-                Debug.Log(btn);
                 RawImage img = btn.GetComponent<RawImage>();
-                Debug.Log(img);
                 img.texture = prefab_image;
-                btn.transform.SetParent(content.transform, false);//ボタンをconyentの子に入れる
+                btn.transform.SetParent(content.transform, false);//ボタンをcontentの子に入れる
+
                 int temp = i;
-                // 各ボタンがクリックされたときの処理
+                // 各オブジェクトボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
                 .Subscribe(_ =>
                 {
