@@ -32,8 +32,9 @@ public class PreviewUIManager : MonoBehaviour {
         return instance;
     }
 
-    public void MakePreviewUI()
+    public IEnumerator MakePreviewUI()
     {
+        yield return new WaitForSeconds(0.1f);
         // プレビュー画面のインスタンス生成
         previewPanel =  InstantiateUI(previewPrefab);
         cancelBtn = InstantiateUI(cancelButtonPrefab);

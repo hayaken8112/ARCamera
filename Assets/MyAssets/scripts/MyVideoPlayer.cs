@@ -31,7 +31,7 @@ public class MyVideoPlayer : MonoBehaviour
         // By default, VideoPlayers added to a camera will use the far plane.
         // Let's target the near plane instead.
         videoPlayer.renderMode = UnityEngine.Video.VideoRenderMode.RenderTexture;
-        videoPlayer.targetTexture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
+        // videoPlayer.targetTexture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
 
         // This will cause our scene to be visible through the video being played.
         videoPlayer.targetCameraAlpha = 1.0f;
@@ -98,6 +98,9 @@ public class MyVideoPlayer : MonoBehaviour
     }
     public string GetVideoURL() {
         return videoPlayer.url;
+    }
+    public void SetTargetTexture(RenderTexture tex) {
+        videoPlayer.targetTexture = tex;
     }
 
 }
