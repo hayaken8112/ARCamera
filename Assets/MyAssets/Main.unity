@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 852121609}
   - component: {fileID: 852121608}
   - component: {fileID: 852121607}
+  - component: {fileID: 852121610}
   m_Layer: 5
   m_Name: EditButton
   m_TagString: Untagged
@@ -1170,6 +1171,23 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 852121605}
+--- !u!114 &852121610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 852121605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1647f2ac1ec3147b6ac5dbbb1b32aa2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderPrefab: {fileID: 1617885481015396, guid: 348214ff862994803a433eeefefe2ee3,
+    type: 2}
+  rotateButtonPrefab: {fileID: 1199230259690944, guid: e4d31435b2ee04956bba6128eaa81d82,
+    type: 2}
+  zoomButtonPrefab: {fileID: 1438303058055994, guid: 4d159e036f33d4f28b29399c23982d60,
+    type: 2}
 --- !u!1 &860269074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,6 +1642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687f7a924b7394fc2b8eb77679436da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMode: 0
 --- !u!1 &1162176472
 GameObject:
   m_ObjectHideFlags: 0

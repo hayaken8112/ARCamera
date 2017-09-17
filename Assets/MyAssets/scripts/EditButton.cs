@@ -36,9 +36,11 @@ public class EditButton : MonoBehaviour {
 			rotateButton.OnClickAsObservable().Subscribe(t => {
 				StateManager.Instance.currentMode = EditMode.Rotate;
 				Debug.Log("Rotate");
+				sliderObj.GetComponent<ARObjectEditor>().InitSlider();
 			});
 			zoomButton.OnClickAsObservable().Subscribe(t => {
 				StateManager.Instance.currentMode = EditMode.Zoom;
+				sliderObj.GetComponent<ARObjectEditor>().InitSlider();
 			});
 			undoButton.SetActive(false);
 
@@ -56,6 +58,7 @@ public class EditButton : MonoBehaviour {
 				rotateButtonObj.SetActive(true);
 				zoomButtonObj.SetActive(true);
 				undoButton.SetActive(false);
+				sliderObj.GetComponent<ARObjectEditor>().InitSlider();
 				isEditting = !isEditting;
 			}
 		});

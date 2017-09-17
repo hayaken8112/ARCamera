@@ -11,10 +11,11 @@ public class ARObjectEditor : MonoBehaviour {
 	Vector3 dragStartPos;
 	Vector3 defaultObjRot;
 	GameObject lastARObject;
+	Slider slider;
 	// Use this for initialization
 	void Start () {
 		StateManager.Instance.currentMode = EditMode.Rotate;
-		Slider slider = this.gameObject.GetComponent<Slider>();
+		slider = this.gameObject.GetComponent<Slider>();
 		GameObject sliderHandle = GameObject.Find("Handle");
 		var pointerDownTrigger = sliderHandle.AddComponent<ObservablePointerDownTrigger>();
 		var beginDragTrigger = sliderHandle.AddComponent<ObservableBeginDragTrigger>();
@@ -45,6 +46,9 @@ public class ARObjectEditor : MonoBehaviour {
 			slider.value = 0.5f;
 			lastARObject = ARObj;
 		});
+	}
+	public void InitSlider() {
+		slider.value = 0.5f;
 	}
 	
 }
