@@ -9,6 +9,7 @@ using UniRx.Triggers;
 namespace ARCamera
 {
     public enum States { Main, ObjectSelect, TextEdit, PreviewPhoto, PreviewVideo };
+	public enum EditMode { Rotate, Zoom }
     public class StateManager : SingletonMonoBehaviour<StateManager>
     {
         bool isOnGameObject = true;
@@ -18,9 +19,11 @@ namespace ARCamera
             get { return StateSubject; }
         }
         public States currentState { get; set; }
+	    public EditMode currentMode;
         void Start()
         {
-            ARCamera.StateManager.Instance.currentState = ARCamera.States.Main; // 初期化
+            currentState = States.Main; // 初期化
+            currentMode = EditMode.Rotate;
 
 			// ObjectSelectかTextEdit状態から、画面をタッチしてMainに戻る
             this.UpdateAsObservable()
