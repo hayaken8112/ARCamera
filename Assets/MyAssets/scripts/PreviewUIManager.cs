@@ -39,7 +39,7 @@ public class PreviewUIManager : MonoBehaviour {
         previewPanel =  InstantiateUI(previewPrefab);
         cancelBtn = InstantiateUI(cancelButtonPrefab);
         saveBtn = InstantiateUI(saveButtonPrefab);
-        shareBtn = InstantiateUI(shareButtonPrefab);
+        // shareBtn = InstantiateUI(shareButtonPrefab);
 
     }
 
@@ -48,6 +48,6 @@ public class PreviewUIManager : MonoBehaviour {
 		Destroy(previewPanel);
 		Destroy(cancelBtn);
 		Destroy(saveBtn);
-		Destroy(shareBtn);
+		// Destroy(shareBtn);
 	}
 }
