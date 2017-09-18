@@ -25,32 +25,41 @@ namespace ARCamera
         public GameObject objBtnPrefab;
         Button undoBtn;
         int nextARObjIndex = 0;
-		public GameObject nextARObject;
+		public ReactiveProperty<GameObject> nextARObjectRP = new ReactiveProperty<GameObject>();
         bool isOnGameObject = true;
         void Start()
         {
             canvas = GameObject.Find("Canvas");
 
             undoBtn = GameObject.Find("UndoButton").GetComponent<Button>();
+			// undoButtonの処理
             undoBtn.OnClickAsObservable().Subscribe(_ =>
             {
                 if (ARObjectStack.Count > 0)
                 {
-                    Destroy(ARObjectStack.Pop());
-                    ARObjectSubject.OnNext(GetLastARObject());
+                    Destroy(ARObjectStack.Pop()); // Stackから一つ消す
+                    ARObjectSubject.OnNext(GetLastARObject()); // Objectが減ったことを通知
                 }
             });
 
             LoadPrefab();
 
 			kindOfnextObject = KindOfObject.Object;
+			// 次のTextObjectが変更されたときの処理
+            nextARObjectRP.Value = null;
+			nextARObjectRP.Subscribe(nextObj => {
+				ARObjectStack.Push(nextObj);
+				ARObjectSubject.OnNext(nextObj);
+			});
 
             // Update
+			// Main状態でのオブジェクトの配置処理
             this.UpdateAsObservable()
-            .Where(_ => Input.touchCount == 1)
+            .Where(_ => Input.touchCount == 1 && StateManager.Instance.currentState == States.Main)
             .Subscribe(_ =>
             {
                 isOnGameObject = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+				Debug.Log("main isOngameObj" + isOnGameObject);
                 if (isOnGameObject) return; // UI上をタッチした場合は何もしない
 
                 isOnGameObject = true;
@@ -84,7 +93,7 @@ namespace ARCamera
                         }
                         else
                         {
-                            if (HitTestWithResultType(point, resultType, nextARObject))
+                            if (HitTestWithResultType(point, resultType, nextARObjectRP.Value))
                             {
                                 return;
                             }
@@ -132,8 +141,6 @@ namespace ARCamera
                     nextObject.transform.position = pos;
                     nextObject.transform.rotation = rot;
                     // ARObjectStack.Push(Instantiate(prefabs[prefabIndex], pos, rot)); // Generate an ARObject and push to the stack
-                    ARObjectStack.Push(nextObject); // Generate an ARObject and push to the stack
-                    ARObjectSubject.OnNext(nextObject);
                     Debug.Log(string.Format("x:{0:0.######} y:{1:0.######} z:{2:0.######}", pos.x, pos.y, pos.z));
                     return true;
                 }
@@ -157,16 +164,14 @@ namespace ARCamera
             {
                 string prefab_name = prefabs[i].name;
                 Texture2D prefab_image = Resources.Load<Texture2D>( "Captures/" + prefab_name);
-                Debug.Log(prefab_image);
 
                 GameObject btn = Instantiate(objBtnPrefab); // Buttonをインスタンス化
-                Debug.Log(btn);
                 RawImage img = btn.GetComponent<RawImage>();
-                Debug.Log(img);
                 img.texture = prefab_image;
-                btn.transform.SetParent(content.transform, false);//ボタンをconyentの子に入れる
+                btn.transform.SetParent(content.transform, false);//ボタンをcontentの子に入れる
+
                 int temp = i;
-                // 各ボタンがクリックされたときの処理
+                // 各オブジェクトボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
                 .Subscribe(_ =>
                 {

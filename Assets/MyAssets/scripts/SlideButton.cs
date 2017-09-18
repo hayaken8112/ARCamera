@@ -13,25 +13,36 @@ using System.Linq;
 public class SlideButton : MonoBehaviour {
 
 	GameObject scrollview;
-	Button slidebutton;
+	Button slideButton;
 
 	PanelSlider panelslider;
 	bool slidein = true;
 	public void Slide(){
 		if(slidein){
 			panelslider.SlideIn();
-			slidein = false;}
-		else{
+			slidein = false;
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+		} else {
 			panelslider.SlideOut();
 			slidein = true;
-			}
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.Main;
+		}
 	}
 
 	void Start () {
 		scrollview = GameObject.Find("Scroll View");
-		slidebutton = this.gameObject.GetComponent<Button>();
+		slideButton = this.gameObject.GetComponent<Button>();
 		panelslider = scrollview.GetComponent<PanelSlider>();
-		slidebutton.OnClickAsObservable().Subscribe(_ => Slide());
+		// slideButtonが押されたときの処理
+		slideButton.OnClickAsObservable().Subscribe(_ => {
+			panelslider.SlideIn();
+			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+		});
+
+		// Main状態に戻ったときの処理
+		ARCamera.StateManager.Instance.OnStatesChanged
+		.Where(state => state == ARCamera.States.Main)
+		.Subscribe(_ => panelslider.SlideOut());
 
 
 	}

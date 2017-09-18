@@ -58,7 +58,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         #if UNITY_IPHONE
         // _CameraSound ();
         #endif
-        previewUIManager.MakePreviewUI();
+        StartCoroutine(previewUIManager.MakePreviewUI());
         StateManager.Instance.currentState = States.PreviewPhoto;
 	}
 
@@ -94,7 +94,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             // _MovieEndSound ();
 		    Everyplay.StopRecording();
             StateManager.Instance.currentState = States.PreviewVideo;
-            previewUIManager.MakePreviewUI();
+            StartCoroutine(previewUIManager.MakePreviewUI());
 
             // StartCoroutine(WaitUntilFinishedWriting());
             this_is_video = false;

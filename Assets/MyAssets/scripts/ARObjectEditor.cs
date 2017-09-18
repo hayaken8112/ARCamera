@@ -4,27 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using ARCamera;
 
 public class ARObjectEditor : MonoBehaviour {
 
 	Vector3 dragStartPos;
 	Vector3 defaultObjRot;
 	GameObject lastARObject;
-	GameObject sliderHandle;
 	Slider slider;
 	// Use this for initialization
 	void Start () {
-		slider = GameObject.Find("Slider").GetComponent<Slider>();
-		sliderHandle = GameObject.Find("Handle");
+		StateManager.Instance.currentMode = EditMode.Rotate;
+		slider = this.gameObject.GetComponent<Slider>();
+		GameObject sliderHandle = GameObject.Find("Handle");
 		var pointerDownTrigger = sliderHandle.AddComponent<ObservablePointerDownTrigger>();
 		var beginDragTrigger = sliderHandle.AddComponent<ObservableBeginDragTrigger>();
-		beginDragTrigger.OnBeginDragAsObservable().Subscribe(pointerEventData => defaultObjRot = lastARObject.transform.rotation.eulerAngles);
-		slider.OnDragAsObservable().Subscribe(pointerEventData => 
+		beginDragTrigger.OnBeginDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate)
+												  .Subscribe(pointerEventData => defaultObjRot = lastARObject.transform.rotation.eulerAngles);
+		slider.OnDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate).Subscribe(pointerEventData => 
 		{
 			if (lastARObject != null) {
 				// スライドバーの中心からの変化分だけ回転させる。
 				float diff = (slider.value - 0.5f) * 360;
 				lastARObject.transform.rotation = Quaternion.Euler(defaultObjRot.x, defaultObjRot.y + diff, defaultObjRot.z);
+			}
+
+		});
+		slider.OnDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Zoom).Subscribe(pointerEventData => 
+		{
+			if (lastARObject != null) {
+				// スライドバーの中心からの変化分だけ回転させる。
+				float scale = slider.value + 0.5f;
+				lastARObject.transform.localScale = new Vector3(scale, scale, scale);
 			}
 
 		});
@@ -35,6 +46,9 @@ public class ARObjectEditor : MonoBehaviour {
 			slider.value = 0.5f;
 			lastARObject = ARObj;
 		});
+	}
+	public void InitSlider() {
+		slider.value = 0.5f;
 	}
 	
 }

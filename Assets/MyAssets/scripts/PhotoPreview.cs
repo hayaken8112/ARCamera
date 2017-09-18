@@ -10,32 +10,23 @@ public class PhotoPreview : MonoBehaviour
 {
 
     GameObject previewPanel;
-    GameObject videoPlayer;
+    GameObject videoPlayerObj;
     public GameObject videoPlayerPrefab;
     RawImage img;
     // Use this for initialization
     void Start()
     {
+        var tex = new RenderTexture(512, 512, 16);
 		img = this.gameObject.GetComponent<RawImage>();
         if (StateManager.Instance.currentState == States.PreviewPhoto) {
             img.texture = ReadTexture(PathManager.GetPhotoPath(), Screen.width, Screen.height);
         } else if (StateManager.Instance.currentState == States.PreviewVideo) {
-            img.texture = Resources.Load("VideoPreviewRendererTexture") as RenderTexture;
-            videoPlayer = Instantiate(videoPlayerPrefab);
-            StartCoroutine(SetVideo()); // 次のフレームでVideoPlayerにURLをセットする
-            /* Observable.EveryUpdate().FirstOrDefault()
-                                    .Subscribe(_ => {
-                                        new WaitForSeconds(2);
-                                        string videoPath = PathManager.GetVideoPath();
-                                        videoPlayer.GetComponent<MyVideoPlayer>().SetVideoURL(videoPath);
-                                    });*/
+            videoPlayerObj = Instantiate(videoPlayerPrefab);
+            StartCoroutine(SetVideo(tex)); // 次のフレームでVideoPlayerにURLをセットする
+            img.texture = tex;
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
     byte[] ReadPngFile(string path)
     {
         FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -56,10 +47,12 @@ public class PhotoPreview : MonoBehaviour
 
         return texture;
     }
-    IEnumerator SetVideo()
+    IEnumerator SetVideo(RenderTexture tex)
     {
-        yield return new WaitForSeconds(1);
+        var videoPlayer = videoPlayerObj.GetComponent<MyVideoPlayer>();
+        yield return null;
+        videoPlayer.SetTargetTexture(tex);
         string videoPath = PathManager.GetVideoPath();
-        videoPlayer.GetComponent<MyVideoPlayer>().SetVideoURL(videoPath);
+        videoPlayer.SetVideoURL(videoPath);
     }
 }
