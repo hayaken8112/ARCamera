@@ -39,6 +39,7 @@ public class ARObjectEditor : MonoBehaviour {
 			}
 
 		});
+		lastARObject = ARCamera.ARObjectGenerator.Instance.GetLastARObject();
 		ARCamera.ARObjectGenerator.Instance.OnObjectGenerated
 		.Subscribe(ARObj => 
 		{

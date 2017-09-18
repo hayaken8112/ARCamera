@@ -9,7 +9,7 @@ using ARCamera;
 public class SaveButton : MonoBehaviour {
     #if UNITY_IPHONE
     [DllImport("__Internal")]
-    private static extern void _MovieToAlbum (string path,string gameObjectName,string callbackMethodName);
+    private static extern void _MovieToAlbum (string path);
     [DllImport("__Internal")]
     private static extern void _ImageToAlbum (string path);
 	#endif
@@ -47,16 +47,20 @@ public class SaveButton : MonoBehaviour {
 
      IEnumerator WaitUntilFinishedWritingPicture(){
 
-		 saving = InstantiateUI(savingPrefab);
 		 #if UNITY_IPHONE && !UNITY_EDITOR
-		 _ImageToAlbum (PathManager.GetPhotoPath());
-		 #endif
-         yield return new WaitForSeconds( 1 );
+		 saving = InstantiateUI(savingPrefab);
+         _ImageToAlbum(ARCamera.PathManager.GetVideoPath());
+		 yield return new WaitForSeconds( 0 );
+		 #else
+		 Debug.Log(this.transform.name);
+
+		 saving = InstantiateUI(savingPrefab);
+         yield return new WaitForSeconds( 2 );
 		 Destroy(saving);
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
-		
+		 #endif
     }
 
 
@@ -64,7 +68,7 @@ public class SaveButton : MonoBehaviour {
      IEnumerator WaitUntilFinishedWritingMovie(){
 		 #if UNITY_IPHONE && !UNITY_EDITOR
 		 saving = InstantiateUI(savingPrefab);
-         _MovieToAlbum (ARCamera.PathManager.GetVideoPath(),this.transform.name,"AfterSaved");
+         _MovieToAlbum (ARCamera.PathManager.GetVideoPath());
 		 yield return new WaitForSeconds( 0 );
 		 #else
 		 Debug.Log(this.transform.name);
@@ -80,12 +84,16 @@ public class SaveButton : MonoBehaviour {
 		
     }
 
-		IEnumerator AfterSaved () {
+		public void AfterSaved (string message) {
 
+		Debug.Log(message);
 		Destroy(saving);
 		saved = InstantiateUI(savedPrefab);
-		yield return new WaitForSeconds( 1 );
-		Destroy(saved);
+		StartCoroutine(DestroySaved());
 	}
+		IEnumerator DestroySaved() {
+			yield return new WaitForSeconds(1);
+			if(saved != null) Destroy(saved);
+		}
 
 }

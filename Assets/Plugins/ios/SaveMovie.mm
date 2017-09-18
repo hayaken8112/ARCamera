@@ -7,7 +7,7 @@
  指定したパスの画像をカメラロールに保存するのに利用するネイティブコード。
  */
 // 指定したパスの画像をカメラロールに保存する。
-extern "C" void _MovieToAlbum (const char* path, const char *gameObjectName, const char *callbackMethodName)
+extern "C" void _MovieToAlbum (const char* path)
 {
 
     
@@ -16,7 +16,7 @@ extern "C" void _MovieToAlbum (const char* path, const char *gameObjectName, con
     [library writeVideoAtPathToSavedPhotosAlbum:videourl completionBlock:^(NSURL *assetURL, NSError *error) {
 
          //書き込み終了後、Unity側へコールバック。
-         UnitySendMessage(gameObjectName, callbackMethodName, [error.description UTF8String]);
+         UnitySendMessage("SaveButton(Clone)", "AfterSaved", "Native to c#");
     }];
 }
 

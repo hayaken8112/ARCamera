@@ -14,7 +14,7 @@ extern "C" void _ImageToAlbum (const char* path)
     NSMutableDictionary *metadata = [[[NSMutableDictionary alloc] init] autorelease];
     [library writeImageToSavedPhotosAlbum:image.CGImage metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
         // 書き込み終了後、Unity側へコールバック。
-        //UnitySendMessage({}, {}, [error.description UTF8String]);
+         UnitySendMessage("SaveButton(Clone)", "AfterSaved", "Native to c#");
     }];
 }
 
