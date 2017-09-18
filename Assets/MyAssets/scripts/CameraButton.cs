@@ -93,12 +93,10 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             onClick.Invoke();
 		Debug.Log("1");
         if(this_is_video){
-            // _MovieEndSound ();
+            _MovieEndSound ();
 		    Everyplay.StopRecording();
             StateManager.Instance.currentState = States.PreviewVideo;
             StartCoroutine(previewUIManager.MakePreviewUI());
-
-            // StartCoroutine(WaitUntilFinishedWriting());
             this_is_video = false;
         }
     }
