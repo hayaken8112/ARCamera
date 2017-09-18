@@ -52,7 +52,9 @@ public class SaveButton : MonoBehaviour {
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
-		_ImageToAlbum (PathManager.GetPhotoPath());
+		 #if UNITY_IPHONE
+		 _ImageToAlbum (PathManager.GetPhotoPath());
+		 #endif
 		
     }
 
@@ -63,12 +65,15 @@ public class SaveButton : MonoBehaviour {
 		 GameObject saved;
 
 		 saving = InstantiateUI(savingPrefab);
+		 
          yield return new WaitForSeconds( 2 );
 		 Destroy(saving);
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
-        _MovieToAlbum (ARCamera.PathManager.GetVideoPath ());
+		 #if UNITY_IPHONE
+         _MovieToAlbum (ARCamera.PathManager.GetVideoPath ());
+		 #endif
 
 		
     }

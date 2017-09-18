@@ -1002,7 +1002,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -60}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 96, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &852121607
 MonoBehaviour:
@@ -1064,7 +1064,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 5121075a5b412441d88b0c0b3621b813, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1abdf53f373314967b042873a77b611c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1865,9 +1865,10 @@ MonoBehaviour:
   - ttfFile: {fileID: 4900000, guid: 3be7a1a5a95e8402ea21aa1efb6b456d, type: 3}
     fontName: Microsoft Sans Serif
   m_defaultFont: 0
-  m_defaultMaterial: {fileID: 0}
-  m_defaultEdgeMaterial: {fileID: 0}
-  m_useEdgeMaterial: 0
+  m_defaultMaterial: {fileID: 2100000, guid: 656777ac3cb024aed80e8912741f6151, type: 2}
+  m_defaultEdgeMaterial: {fileID: 2100000, guid: e9d576fd5d8bf4a86ad04f955aa1b393,
+    type: 2}
+  m_useEdgeMaterial: 1
   m_defaultColor: {r: 1, g: 1, b: 1, a: 1}
   m_computeTangents: 0
   m_defaultResolution: 5

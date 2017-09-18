@@ -67,7 +67,9 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
+        #if UNITY_IOS
         _MovieStartSound ();
+        #endif
 	}
 
 	// Remove all comment tags (except this one) to handle the onClick event!
@@ -91,7 +93,9 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             onClick.Invoke();
 		Debug.Log("1");
         if(this_is_video){
+            #if UNITY_IOS 
             _MovieEndSound ();
+            #endif
 		    Everyplay.StopRecording();
             StateManager.Instance.currentState = States.PreviewVideo;
             StartCoroutine(previewUIManager.MakePreviewUI());
