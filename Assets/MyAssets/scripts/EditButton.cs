@@ -8,6 +8,9 @@ using ARCamera;
 public class EditButton : MonoBehaviour {
 
 	GameObject canvas;
+	public Sprite icon1;
+	public Sprite icon2;
+	Image editButtonImage;
 	public GameObject sliderPrefab;
 	public GameObject rotateButtonPrefab;
 	public GameObject zoomButtonPrefab;
@@ -24,6 +27,7 @@ public class EditButton : MonoBehaviour {
 		canvas = GameObject.Find("Canvas");
 		undoButton = GameObject.Find("UndoButton");
 		editButton = this.GetComponent<Button>();
+		editButtonImage = this.GetComponent<Image>();
 		editButton.OnClickAsObservable().Take(1).Subscribe(_ => {
 			sliderObj = Instantiate(sliderPrefab);
 			sliderObj.transform.SetParent(canvas.transform, false);
@@ -43,6 +47,7 @@ public class EditButton : MonoBehaviour {
 				sliderObj.GetComponent<ARObjectEditor>().InitSlider();
 			});
 			undoButton.SetActive(false);
+			editButtonImage.sprite = icon2;
 
 			isEditting = !isEditting;
 		});
@@ -52,6 +57,7 @@ public class EditButton : MonoBehaviour {
 				rotateButtonObj.SetActive(false);
 				zoomButtonObj.SetActive(false);
 				undoButton.SetActive(true);
+				editButtonImage.sprite = icon1;
 				isEditting = !isEditting;
 			} else {
 				sliderObj.SetActive(true);
@@ -59,6 +65,7 @@ public class EditButton : MonoBehaviour {
 				zoomButtonObj.SetActive(true);
 				undoButton.SetActive(false);
 				sliderObj.GetComponent<ARObjectEditor>().InitSlider();
+				editButtonImage.sprite = icon2;
 				isEditting = !isEditting;
 			}
 		});

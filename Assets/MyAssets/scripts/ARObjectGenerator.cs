@@ -46,6 +46,7 @@ namespace ARCamera
 
 			kindOfnextObject = KindOfObject.Object;
 			// 次のTextObjectが変更されたときの処理
+            nextARObjectRP.Value = null;
 			nextARObjectRP.Subscribe(nextObj => {
 				ARObjectStack.Push(nextObj);
 				ARObjectSubject.OnNext(nextObj);

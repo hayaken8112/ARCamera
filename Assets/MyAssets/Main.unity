@@ -1182,6 +1182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1647f2ac1ec3147b6ac5dbbb1b32aa2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon1: {fileID: 21300000, guid: 5121075a5b412441d88b0c0b3621b813, type: 3}
+  icon2: {fileID: 21300000, guid: 442211305798140dfb4f1884600516ea, type: 3}
   sliderPrefab: {fileID: 1617885481015396, guid: 348214ff862994803a433eeefefe2ee3,
     type: 2}
   rotateButtonPrefab: {fileID: 1199230259690944, guid: e4d31435b2ee04956bba6128eaa81d82,
@@ -1951,7 +1953,7 @@ MonoBehaviour:
   m_computeTangents: 0
   m_defaultResolution: 5
   m_defaultSize: 1
-  m_defaultDepth: 0.25
+  m_defaultDepth: 0.1
   m_defaultLetterSpacing: 1
   m_defaultLineSpacing: 0
   m_defaultLineWidth: 0
