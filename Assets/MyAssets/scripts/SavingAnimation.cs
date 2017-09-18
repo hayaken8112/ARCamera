@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SavedAnimation : MonoBehaviour {
+public class SavingAnimation : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -11,6 +11,6 @@ public class SavedAnimation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Rotate(0,0,5);	
+		transform.Rotate(0,0,-5);	
 	}
 }

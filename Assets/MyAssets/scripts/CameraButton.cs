@@ -55,7 +55,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		screenshot.CaptchaScreen();
 		Debug.Log("short tap");
 		// _PlaySystemShutterSound ();
-        #if UNITY_IPHONE
+        #if UNITY_IOS && !UNITY_EDITOR
         _CameraSound ();
         #endif
         StartCoroutine(previewUIManager.MakePreviewUI());
@@ -67,7 +67,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
-        #if UNITY_IPHONE
+        #if UNITY_IOS && !UNITY_EDITOR
         _MovieStartSound ();
         #endif
 	}
@@ -93,7 +93,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             onClick.Invoke();
 		Debug.Log("1");
         if(this_is_video){
-            #if UNITY_IOS 
+            #if UNITY_IOS && !UNITY_EDITOR 
             _MovieEndSound ();
             #endif
 		    Everyplay.StopRecording();
