@@ -9,13 +9,16 @@ using ARCamera;
 public class SaveButton : MonoBehaviour {
     #if UNITY_IPHONE
     [DllImport("__Internal")]
-    private static extern void _MovieToAlbum (string path);
+    private static extern void _MovieToAlbum (string path,string gameObjectName,string callbackMethodName);
     [DllImport("__Internal")]
     private static extern void _ImageToAlbum (string path);
 	#endif
 	Button saveBtn;
 	public GameObject savingPrefab;
 	public GameObject savedPrefab;
+	GameObject saving;
+	GameObject saved;
+
 
 	GameObject InstantiateUI(GameObject prefab)
     {
@@ -43,8 +46,6 @@ public class SaveButton : MonoBehaviour {
 	}
 
      IEnumerator WaitUntilFinishedWritingPicture(){
-		 GameObject saving;
-		 GameObject saved;
 
 		 saving = InstantiateUI(savingPrefab);
 		 #if UNITY_IPHONE && !UNITY_EDITOR
@@ -61,19 +62,30 @@ public class SaveButton : MonoBehaviour {
 
 
      IEnumerator WaitUntilFinishedWritingMovie(){
-		 GameObject saving;
-		 GameObject saved;
+		 #if UNITY_IPHONE && !UNITY_EDITOR
+		 saving = InstantiateUI(savingPrefab);
+         _MovieToAlbum (ARCamera.PathManager.GetVideoPath(),this.transform.name,"AfterSaved");
+		 yield return new WaitForSeconds( 0 );
+		 #else
+		 Debug.Log(this.transform.name);
 
 		 saving = InstantiateUI(savingPrefab);
-		 #if UNITY_IPHONE && !UNITY_EDITOR
-         _MovieToAlbum (ARCamera.PathManager.GetVideoPath ());
-		 #endif
          yield return new WaitForSeconds( 2 );
 		 Destroy(saving);
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
+		 #endif
 
 		
     }
+
+		IEnumerator AfterSaved () {
+
+		Destroy(saving);
+		saved = InstantiateUI(savedPrefab);
+		yield return new WaitForSeconds( 1 );
+		Destroy(saved);
+	}
+
 }

@@ -49,8 +49,8 @@ public static class EveryplayPostprocessor
 
         if (settings != null)
         {
-            if (settings.IsBuildTargetEnabled)
-            {
+//            if (settings.IsBuildTargetEnabled)
+  //          {
                 if (settings.IsValid)
                 {
                     if (target == kBuildTarget_iOS)
@@ -70,7 +70,7 @@ public static class EveryplayPostprocessor
                 {
                     Debug.LogError("Everyplay will be disabled because client id, client secret or redirect URI was not valid.");
                 }
-            }
+ //           }
         }
 
         ValidateEveryplayState(settings);
