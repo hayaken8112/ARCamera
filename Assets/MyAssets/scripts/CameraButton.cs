@@ -16,7 +16,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     ScreenShot screenshot;
 
 
-    #if UNITY_IPHONE
+ //   #if UNITY_IPHONE
     // クラスの最初でインポート
 
 
@@ -27,7 +27,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     [DllImport("__Internal")]
     private static extern void _MovieEndSound ();
 
-#endif
+//#endif
 
 
 
@@ -67,7 +67,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
-        #if UNITY_IOS
+        #if UNITY_IPHONE
         _MovieStartSound ();
         #endif
 	}
