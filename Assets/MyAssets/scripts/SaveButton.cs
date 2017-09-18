@@ -14,6 +14,18 @@ public class SaveButton : MonoBehaviour {
     private static extern void _ImageToAlbum (string path);
 	#endif
 	Button saveBtn;
+	public GameObject savingPrefab;
+	public GameObject savedPrefab;
+
+	GameObject InstantiateUI(GameObject prefab)
+    {
+		GameObject canvas = GameObject.Find("Canvas");
+        GameObject instance = Instantiate(prefab);
+        instance.transform.SetParent(canvas.transform, false);
+        return instance;
+    }
+
+
 	// Use this for initialization
 	void Start () {
 		saveBtn = this.gameObject.GetComponent<Button>();
@@ -31,35 +43,31 @@ public class SaveButton : MonoBehaviour {
 	}
 
      IEnumerator WaitUntilFinishedWritingPicture(){
-		 GameObject saving = GameObject.Find("saving");
-		 GameObject saved = GameObject.Find("saved");
-		 saving.transform.SetAsLastSibling();
-		 saved.transform.SetAsLastSibling();		 
-		 PanelSlider saved_slider = saved.GetComponent<PanelSlider>();
-		 PanelSlider saving_slider = saving.GetComponent<PanelSlider>();
-		 saving_slider.SlideIn();
+		 GameObject saving;
+		 GameObject saved;
+
+		 saving = InstantiateUI(savingPrefab);
          yield return new WaitForSeconds( 1 );
-		 saving_slider.SlideOut();
-		 saved_slider.SlideIn();
-		yield return new WaitForSeconds( 1 );
-		saved_slider.SlideOut();
+		 Destroy(saving);
+		 saved = InstantiateUI(savedPrefab);
+		 yield return new WaitForSeconds( 1 );
+		 Destroy(saved);
 		_ImageToAlbum (PathManager.GetPhotoPath());
 		
     }
 
+
+
      IEnumerator WaitUntilFinishedWritingMovie(){
-		 GameObject saving = GameObject.Find("saving");
-		 GameObject saved = GameObject.Find("saved");
-		 saving.transform.SetAsLastSibling();
-		 saved.transform.SetAsLastSibling();		 
-		 PanelSlider saved_slider = saved.GetComponent<PanelSlider>();
-		 PanelSlider saving_slider = saving.GetComponent<PanelSlider>();
-		 saving_slider.SlideIn();
+		 GameObject saving;
+		 GameObject saved;
+
+		 saving = InstantiateUI(savingPrefab);
          yield return new WaitForSeconds( 2 );
-		 saving_slider.SlideOut();
-		 saved_slider.SlideIn();
-		yield return new WaitForSeconds( 1 );
-		saved_slider.SlideOut();
+		 Destroy(saving);
+		 saved = InstantiateUI(savedPrefab);
+		 yield return new WaitForSeconds( 1 );
+		 Destroy(saved);
         _MovieToAlbum (ARCamera.PathManager.GetVideoPath ());
 
 		
