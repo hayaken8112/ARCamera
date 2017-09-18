@@ -56,7 +56,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("short tap");
 		// _PlaySystemShutterSound ();
         #if UNITY_IPHONE
-        // _CameraSound ();
+        _CameraSound ();
         #endif
         StartCoroutine(previewUIManager.MakePreviewUI());
         StateManager.Instance.currentState = States.PreviewPhoto;
@@ -67,7 +67,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
-        // _MovieStartSound ();
+        _MovieStartSound ();
 	}
 
 	// Remove all comment tags (except this one) to handle the onClick event!
