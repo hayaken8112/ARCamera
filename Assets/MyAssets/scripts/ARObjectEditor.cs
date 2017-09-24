@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ public class ARObjectEditor : MonoBehaviour {
 
 	Vector3 dragStartPos;
 	Vector3 defaultObjRot;
+	Vector3 defaultObjScale;
 	GameObject lastARObject;
 	Slider slider;
 	// Use this for initialization
@@ -21,6 +23,8 @@ public class ARObjectEditor : MonoBehaviour {
 		var beginDragTrigger = sliderHandle.AddComponent<ObservableBeginDragTrigger>();
 		beginDragTrigger.OnBeginDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate)
 												  .Subscribe(pointerEventData => defaultObjRot = lastARObject.transform.rotation.eulerAngles);
+		beginDragTrigger.OnBeginDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Zoom)
+												  .Subscribe(pointerEventData => defaultObjScale = lastARObject.transform.localScale);
 		slider.OnDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate).Subscribe(pointerEventData => 
 		{
 			if (lastARObject != null) {
@@ -34,7 +38,7 @@ public class ARObjectEditor : MonoBehaviour {
 		{
 			if (lastARObject != null) {
 				// スライドバーの中心からの変化分だけ回転させる。
-				float scale = slider.value + 0.5f;
+				float scale = 0.1f * (float)Math.Pow(100, slider.value);
 				lastARObject.transform.localScale = new Vector3(scale, scale, scale);
 			}
 

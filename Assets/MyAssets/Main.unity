@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44981843, g: 0.49988526, b: 0.5755968, a: 1}
+  m_IndirectSpecularColor: {r: 0.4498185, g: 0.49988538, b: 0.57559717, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -521,6 +521,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_camera: {fileID: 1552606293}
+  startAlignment: 0
+  planeDetection: 1
+  getPointCloud: 1
+  enableLightEstimation: 1
 --- !u!4 &560567152
 Transform:
   m_ObjectHideFlags: 0
@@ -1864,7 +1868,9 @@ MonoBehaviour:
   m_fontData:
   - ttfFile: {fileID: 4900000, guid: 3be7a1a5a95e8402ea21aa1efb6b456d, type: 3}
     fontName: Microsoft Sans Serif
-  m_defaultFont: 0
+  - ttfFile: {fileID: 4900000, guid: 1d16865ca93d44e26aa83ec3670bdb1d, type: 3}
+    fontName: IPAexGothic
+  m_defaultFont: 1
   m_defaultMaterial: {fileID: 2100000, guid: 656777ac3cb024aed80e8912741f6151, type: 2}
   m_defaultEdgeMaterial: {fileID: 2100000, guid: e9d576fd5d8bf4a86ad04f955aa1b393,
     type: 2}
@@ -1872,8 +1878,8 @@ MonoBehaviour:
   m_defaultColor: {r: 1, g: 1, b: 1, a: 1}
   m_computeTangents: 0
   m_defaultResolution: 5
-  m_defaultSize: 1
-  m_defaultDepth: 0.1
+  m_defaultSize: 0.3
+  m_defaultDepth: 0.05
   m_defaultLetterSpacing: 1
   m_defaultLineSpacing: 0
   m_defaultLineWidth: 0
