@@ -2154,14 +2154,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5ac211a643e447ca78c2d794a16381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleAnimation: {fileID: 7400002, guid: 449b48f7eb5d87a4baaa5fb73f875a59, type: 3}
+  idleAnimation01: {fileID: 0}
+  idleAnimation02: {fileID: 0}
+  idleAnimation03: {fileID: 0}
   walkAnimation: {fileID: 7400008, guid: 449b48f7eb5d87a4baaa5fb73f875a59, type: 3}
   runAnimation: {fileID: 7400004, guid: 449b48f7eb5d87a4baaa5fb73f875a59, type: 3}
   jumpPoseAnimation: {fileID: 7400010, guid: 449b48f7eb5d87a4baaa5fb73f875a59, type: 3}
+  JumpPoseAnimation: {fileID: 0}
+  LeftjumpPoseAnimation: {fileID: 0}
+  RightjumpPoseAnimation: {fileID: 0}
   walkMaxAnimationSpeed: 0.9
   trotMaxAnimationSpeed: 1.3
   runMaxAnimationSpeed: 0.9
-  jumpAnimationSpeed: 1.15
+  JumpAnimationSpeed: 1.5
+  sideJumpAnimationSpeed: 1
   landAnimationSpeed: 1
   walkSpeed: 3
   trotSpeed: 4
