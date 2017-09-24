@@ -97,12 +97,18 @@ typedef struct
 
 typedef struct
 {
+    float ambientIntensity;
+    float ambientColorTemperature;
+}UnityARLightEstimation;
+
+typedef struct
+{
     UnityARMatrix4x4 worldTransform;
     UnityARMatrix4x4 projectionMatrix;
     UnityARTrackingState trackingState;
     UnityARTrackingReason trackingReason;
     UnityVideoParams videoParams;
-    float ambientIntensity;
+    UnityARLightEstimation lightEstimation;
     uint32_t getPointCloudData;
 } UnityARCamera;
 
@@ -208,14 +214,14 @@ inline ARSessionRunOptions GetARSessionRunOptionsFromUnityARSessionRunOptions(Un
     return ret;
 }
 
-inline void GetARSessionConfigurationFromARKitWorldTrackingSessionConfiguration(ARKitWorldTrackingSessionConfiguration& unityConfig, ARWorldTrackingSessionConfiguration* appleConfig)
+inline void GetARSessionConfigurationFromARKitWorldTrackingSessionConfiguration(ARKitWorldTrackingSessionConfiguration& unityConfig, ARWorldTrackingConfiguration* appleConfig)
 {
     appleConfig.planeDetection = GetARPlaneDetectionFromUnityARPlaneDetection(unityConfig.planeDetection);
     appleConfig.worldAlignment = GetARWorldAlignmentFromUnityARAlignment(unityConfig.alignment);
     appleConfig.lightEstimationEnabled = (BOOL)unityConfig.enableLightEstimation;
 }
 
-inline void GetARSessionConfigurationFromARKitSessionConfiguration(ARKitSessionConfiguration& unityConfig, ARSessionConfiguration* appleConfig)
+inline void GetARSessionConfigurationFromARKitSessionConfiguration(ARKitSessionConfiguration& unityConfig, ARConfiguration* appleConfig)
 {
     appleConfig.worldAlignment = GetARWorldAlignmentFromUnityARAlignment(unityConfig.alignment);
     appleConfig.lightEstimationEnabled = (BOOL)unityConfig.enableLightEstimation;
@@ -252,7 +258,7 @@ inline void ARKitMatrixToUnityARMatrix4x4(const matrix_float4x4& matrixIn, Unity
 static inline void GetUnityARCameraDataFromCamera(UnityARCamera& unityARCamera, ARCamera* camera, BOOL getPointCloudData)
 {
     CGSize nativeSize = GetAppController().rootView.bounds.size;
-    matrix_float4x4 projectionMatrix = [camera projectionMatrixWithViewportSize:nativeSize orientation:[[UIApplication sharedApplication] statusBarOrientation] zNear:(CGFloat)unityCameraNearZ zFar:(CGFloat)unityCameraFarZ];
+    matrix_float4x4 projectionMatrix = [camera projectionMatrixForOrientation:[[UIApplication sharedApplication] statusBarOrientation] viewportSize:nativeSize zNear:(CGFloat)unityCameraNearZ zFar:(CGFloat)unityCameraFarZ];
     
     ARKitMatrixToUnityARMatrix4x4(projectionMatrix, &s_CameraProjectionMatrix);
     ARKitMatrixToUnityARMatrix4x4(projectionMatrix, &unityARCamera.projectionMatrix);
@@ -414,11 +420,7 @@ static CGAffineTransform s_CurAffineTransform;
     CGRect nativeBounds = [[UIScreen mainScreen] nativeBounds];
     CGSize nativeSize = GetAppController().rootView.bounds.size;
 
-    matrix_float4x4 projectionMatrix = [frame.camera projectionMatrixWithViewportSize:nativeSize orientation:[[UIApplication sharedApplication] statusBarOrientation] zNear:(CGFloat)unityCameraNearZ zFar:(CGFloat)unityCameraFarZ];
-
-    // s_CurAffineTransform = [frame displayTransformWithViewportSize:nativeSize orientation:[[UIApplication sharedApplication] statusBarOrientation]];
     s_CurAffineTransform = [frame displayTransformForOrientation:[[UIApplication sharedApplication] statusBarOrientation] viewportSize:nativeSize];
-
 
     UnityARCamera unityARCamera;
 
@@ -435,10 +437,11 @@ static CGAffineTransform s_CurAffineTransform;
     unityARCamera.videoParams.texCoordScale =  screenAspect / imageAspect;
     s_ShaderScale = screenAspect / imageAspect;
     
-    unityARCamera.ambientIntensity = frame.lightEstimate.ambientIntensity;
-    
-    unityARCamera.videoParams.yWidth = imageWidth;
-    unityARCamera.videoParams.yHeight = imageHeight;
+    unityARCamera.lightEstimation.ambientIntensity = frame.lightEstimate.ambientIntensity;
+    unityARCamera.lightEstimation.ambientColorTemperature = frame.lightEstimate.ambientColorTemperature;
+
+    unityARCamera.videoParams.yWidth = (uint32_t)imageWidth;
+    unityARCamera.videoParams.yHeight = (uint32_t)imageHeight;
     unityARCamera.videoParams.cvPixelBufferPtr = (void *) pixelBuffer;
     
 
@@ -498,13 +501,13 @@ static CGAffineTransform s_CurAffineTransform;
         
         if (s_UnityPixelBuffers.pYPixelBytes)
         {
-            uint32_t numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0) * CVPixelBufferGetHeightOfPlane(pixelBuffer,0);
+            unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0) * CVPixelBufferGetHeightOfPlane(pixelBuffer,0);
             void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,0);
             memcpy(s_UnityPixelBuffers.pYPixelBytes, baseAddress, numBytes);
         }
         if (s_UnityPixelBuffers.pUVPixelBytes)
         {
-            uint32_t numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1) * CVPixelBufferGetHeightOfPlane(pixelBuffer,1);
+            unsigned long numBytes = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1) * CVPixelBufferGetHeightOfPlane(pixelBuffer,1);
             void* baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1);
             memcpy(s_UnityPixelBuffers.pUVPixelBytes, baseAddress, numBytes);
         }
@@ -688,7 +691,7 @@ extern "C" void session_SetUserAnchorCallbacks(const void* session, UNITY_AR_USE
 extern "C" void StartWorldTrackingSessionWithOptions(void* nativeSession, ARKitWorldTrackingSessionConfiguration unityConfig, UnityARSessionRunOptions runOptions)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-    ARWorldTrackingSessionConfiguration* config = [ARWorldTrackingSessionConfiguration new];
+    ARWorldTrackingConfiguration* config = [ARWorldTrackingConfiguration new];
     ARSessionRunOptions runOpts = GetARSessionRunOptionsFromUnityARSessionRunOptions(runOptions);
     GetARSessionConfigurationFromARKitWorldTrackingSessionConfiguration(unityConfig, config);
     session->_getPointCloudData = (BOOL) unityConfig.getPointCloudData;
@@ -701,7 +704,7 @@ extern "C" void StartWorldTrackingSessionWithOptions(void* nativeSession, ARKitW
 extern "C" void StartWorldTrackingSession(void* nativeSession, ARKitWorldTrackingSessionConfiguration unityConfig)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-    ARWorldTrackingSessionConfiguration* config = [ARWorldTrackingSessionConfiguration new];
+    ARWorldTrackingConfiguration* config = [ARWorldTrackingConfiguration new];
     GetARSessionConfigurationFromARKitWorldTrackingSessionConfiguration(unityConfig, config);
     session->_getPointCloudData = (BOOL) unityConfig.getPointCloudData;
     [session->_session runWithConfiguration:config];
@@ -711,7 +714,7 @@ extern "C" void StartWorldTrackingSession(void* nativeSession, ARKitWorldTrackin
 extern "C" void StartSessionWithOptions(void* nativeSession, ARKitSessionConfiguration unityConfig, UnityARSessionRunOptions runOptions)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-    ARSessionConfiguration* config = [ARSessionConfiguration new];
+    ARConfiguration* config = [AROrientationTrackingConfiguration new];
     ARSessionRunOptions runOpts = GetARSessionRunOptionsFromUnityARSessionRunOptions(runOptions);
     GetARSessionConfigurationFromARKitSessionConfiguration(unityConfig, config);
     session->_getPointCloudData = (BOOL) unityConfig.getPointCloudData;
@@ -724,7 +727,7 @@ extern "C" void StartSessionWithOptions(void* nativeSession, ARKitSessionConfigu
 extern "C" void StartSession(void* nativeSession, ARKitSessionConfiguration unityConfig)
 {
     UnityARSession* session = (__bridge UnityARSession*)nativeSession;
-    ARSessionConfiguration* config = [ARSessionConfiguration new];
+    ARConfiguration* config = [AROrientationTrackingConfiguration new];
     GetARSessionConfigurationFromARKitSessionConfiguration(unityConfig, config);
     session->_getPointCloudData = (BOOL) unityConfig.getPointCloudData;
     [session->_session runWithConfiguration:config];
@@ -885,10 +888,10 @@ extern "C" float GetYUVTexCoordScale()
 
 extern "C" bool IsARKitWorldTrackingSessionConfigurationSupported()
 {
-    return ARWorldTrackingSessionConfiguration.isSupported;
+    return ARWorldTrackingConfiguration.isSupported;
 }
 
 extern "C" bool IsARKitSessionConfigurationSupported()
 {
-    return ARSessionConfiguration.isSupported;
+    return AROrientationTrackingConfiguration.isSupported;
 }
