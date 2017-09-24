@@ -1,22 +1,22 @@
 fileFormatVersion: 2
-guid: 334fe9c699fd84838830c9b98c6aff13
-timeCreated: 1506268864
+guid: 821586c8570c14d3c9575094a581396a
+timeCreated: 1506274270
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Dog
-    100004: Paws
-    400000: //RootNode
-    400002: Dog
-    400004: Paws
-    2300000: Dog
-    2300002: Paws
-    3300000: Dog
-    3300002: Paws
-    4300000: Dog
-    4300002: Paws
+    100000: Cube
+    100002: //RootNode
+    100004: Plane
+    400000: Cube
+    400002: //RootNode
+    400004: Plane
+    2300000: Cube
+    2300002: Plane
+    3300000: Cube
+    3300002: Plane
+    4300000: Plane
+    4300002: Cube
   materials:
     importMaterials: 1
     materialName: 0
