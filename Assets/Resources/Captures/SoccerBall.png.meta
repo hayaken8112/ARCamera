@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources/Captures/SoccerBall.png.meta
 guid: 1e26dcabfc1ec4587b18aa527ddc5a73
 timeCreated: 1506297463
+=======
+guid: aa35eaa3c46794e99875f450ba57cedf
+timeCreated: 1506282059
+>>>>>>> 7db1f126b6ab5e03d04235a461819e70666f1a8a:Assets/Resources/Captures/SoccerBall.png.meta
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
