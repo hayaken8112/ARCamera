@@ -45,12 +45,13 @@ public class SaveButton : MonoBehaviour {
 		
 	}
 
+/* 
      IEnumerator WaitUntilFinishedWritingPicture(){
 
 		 #if UNITY_IPHONE && !UNITY_EDITOR
 		 saving = InstantiateUI(savingPrefab);
-         _ImageToAlbum(ARCamera.PathManager.GetVideoPath());
 		 yield return new WaitForSeconds( 0 );
+         _ImageToAlbum(ARCamera.PathManager.GetVideoPath());
 		 #else
 		 Debug.Log(this.transform.name);
 
@@ -61,6 +62,20 @@ public class SaveButton : MonoBehaviour {
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
 		 #endif
+    }
+	*/
+	     IEnumerator WaitUntilFinishedWritingPicture(){
+
+		 saving = InstantiateUI(savingPrefab);
+		 #if UNITY_IPHONE && !UNITY_EDITOR
+		 _ImageToAlbum (PathManager.GetPhotoPath());
+		 #endif
+         yield return new WaitForSeconds( 1 );
+		 Destroy(saving);
+		 saved = InstantiateUI(savedPrefab);
+		 yield return new WaitForSeconds( 1 );
+		 Destroy(saved);
+		
     }
 
 
