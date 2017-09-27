@@ -14,6 +14,7 @@ public class SaveButton : MonoBehaviour {
     private static extern void _ImageToAlbum (string path);
 	#endif
 	Button saveBtn;
+	GameObject cancelBtnObj;
 	public GameObject savingPrefab;
 	public GameObject savedPrefab;
 	GameObject saving;
@@ -32,11 +33,20 @@ public class SaveButton : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		saveBtn = this.gameObject.GetComponent<Button>();
+		cancelBtnObj = GameObject.Find("CancelButton(Clone)");
 		if (StateManager.Instance.currentState == States.PreviewPhoto){
-			saveBtn.OnClickAsObservable().Subscribe(_ => StartCoroutine(WaitUntilFinishedWritingPicture()));
+			saveBtn.OnClickAsObservable().Subscribe(_ => {
+				this.transform.Translate(0, -100, 0);
+				StartCoroutine(WaitUntilFinishedWritingPicture());
+				cancelBtnObj.transform.Translate(0, 100, 0);
+			});
 		}
 		else if (StateManager.Instance.currentState == States.PreviewVideo){
-			saveBtn.OnClickAsObservable().Subscribe(_ => StartCoroutine(WaitUntilFinishedWritingMovie()));
+			saveBtn.OnClickAsObservable().Subscribe(_ => {
+				this.transform.Translate(0, -100, 0);
+				StartCoroutine(WaitUntilFinishedWritingMovie());
+				cancelBtnObj.transform.Translate(0, 100, 0);
+			});
 		}
 	}
 	
@@ -75,6 +85,7 @@ public class SaveButton : MonoBehaviour {
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
+		 cancelBtnObj.transform.Translate(0, -100, 0);
 		
     }
 
@@ -95,6 +106,7 @@ public class SaveButton : MonoBehaviour {
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
 		 #endif
+		 cancelBtnObj.transform.Translate(0, -100, 0);
 
 		
     }
