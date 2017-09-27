@@ -562,7 +562,7 @@ GameObject:
   - component: {fileID: 4841833085232792}
   - component: {fileID: 111044509962072952}
   m_Layer: 0
-  m_Name: Allosaurus_03
+  m_Name: 6Allosaurus_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

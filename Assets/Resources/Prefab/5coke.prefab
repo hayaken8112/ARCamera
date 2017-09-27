@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4169554284338320}
   m_Layer: 0
-  m_Name: coke
+  m_Name: 5coke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

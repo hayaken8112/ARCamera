@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4184802268474188}
   - component: {fileID: 114378585465432324}
   m_Layer: 0
-  m_Name: balloon
+  m_Name: 1balloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ Transform:
   m_GameObject: {fileID: 1781037405506948}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.54119676, z: 1}
+  m_LocalScale: {x: 1, y: 0.4, z: 1}
   m_Children: []
   m_Father: {fileID: 4184802268474188}
   m_RootOrder: 2

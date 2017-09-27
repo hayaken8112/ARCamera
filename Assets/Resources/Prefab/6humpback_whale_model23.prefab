@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 4364215476760052}
   - component: {fileID: 111328338014550808}
   m_Layer: 0
-  m_Name: humpback_whale_model23
+  m_Name: 6humpback_whale_model23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

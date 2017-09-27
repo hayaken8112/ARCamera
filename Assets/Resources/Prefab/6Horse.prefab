@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 4189196662950638}
   - component: {fileID: 95733303829621526}
   m_Layer: 0
-  m_Name: Horse
+  m_Name: 6Horse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

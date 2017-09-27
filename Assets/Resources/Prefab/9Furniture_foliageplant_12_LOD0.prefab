@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4463903271077648}
   - component: {fileID: 95999160284986048}
   m_Layer: 0
-  m_Name: Furniture_foliageplant_12_LOD0
+  m_Name: 9Furniture_foliageplant_12_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

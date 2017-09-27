@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 95149977787015808}
   - component: {fileID: 64423738351826972}
   m_Layer: 0
-  m_Name: Helicopter
+  m_Name: 7aHelicopter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

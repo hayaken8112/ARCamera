@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 111328110051470930}
   - component: {fileID: 95720311659119166}
   m_Layer: 0
-  m_Name: KittenNPC
+  m_Name: 6aKittenNPC
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

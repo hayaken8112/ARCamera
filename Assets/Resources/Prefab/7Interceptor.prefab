@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 95569235421930614}
   - component: {fileID: 64280429164318252}
   m_Layer: 0
-  m_Name: Interceptor
+  m_Name: 7Interceptor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

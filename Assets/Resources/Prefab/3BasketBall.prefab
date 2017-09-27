@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4169525529792994}
   m_Layer: 0
-  m_Name: BasketBall
+  m_Name: 3BasketBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
