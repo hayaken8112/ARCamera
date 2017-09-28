@@ -32,6 +32,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
 
 	public GameObject button;
+    Image button_color;
 	[SerializeField]
     [Tooltip("How long must pointer be down on this object to trigger a long press")]
 
@@ -47,6 +48,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         previewUIManager = manager.GetComponent<PreviewUIManager>();
         screenshot = this.gameObject.GetComponent<ScreenShot>();
 		button = GameObject.Find("Button");
+        button_color = button.GetComponent<Image>();
 		this.onClick.AddListener(TakeShot);
 		this.onLongPress.AddListener(Record);
 	}
@@ -67,6 +69,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
+        button_color.color = new Color(1, 0, 0, 1);
         #if UNITY_IOS && !UNITY_EDITOR
         _MovieStartSound ();
         #endif
@@ -93,6 +96,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             onClick.Invoke();
 		Debug.Log("1");
         if(this_is_video){
+            button_color.color = new Color(1, 1, 1, 1);
             #if UNITY_IOS && !UNITY_EDITOR 
             _MovieEndSound ();
             #endif

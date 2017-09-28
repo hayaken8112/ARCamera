@@ -18,13 +18,14 @@ namespace ARCamera
         GameObject canvas;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
         private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
+        private List<GameObject> GridButtonList = new List<GameObject>();
         public IObservable<GameObject> OnObjectGenerated
         {
             get { return ARObjectSubject; }
         }
         public GameObject objBtnPrefab;
         Button undoBtn;
-        int nextARObjIndex = 0;
+        ReactiveProperty<int> nextARObjIndex = new ReactiveProperty<int>();
 		public ReactiveProperty<GameObject> nextARObjectRP = new ReactiveProperty<GameObject>();
         bool isOnGameObject = true;
         void Start()
@@ -43,6 +44,7 @@ namespace ARCamera
             });
 
             LoadPrefab();
+            Change_Gridcolor_Slidebutton();
 
 			kindOfnextObject = KindOfObject.Object;
 			// 次のTextObjectが変更されたときの処理
@@ -86,7 +88,7 @@ namespace ARCamera
                     {
                         if (kindOfnextObject == KindOfObject.Object)
                         {
-                            if (HitTestWithResultType(point, resultType, nextARObjIndex))
+                            if (HitTestWithResultType(point, resultType, nextARObjIndex.Value))
                             {
                                 return;
                             }
@@ -169,17 +171,32 @@ namespace ARCamera
                 RawImage img = btn.GetComponent<RawImage>();
                 img.texture = prefab_image;
                 btn.transform.SetParent(content.transform, false);//ボタンをcontentの子に入れる
+                GridButtonList.Add(btn); //ボタンをリストに入れる
 
                 int temp = i;
                 // 各オブジェクトボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    nextARObjIndex = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
+                    nextARObjIndex.Value = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
 					kindOfnextObject = KindOfObject.Object;
                 });
             }
 
+        }
+        void Change_Gridcolor_Slidebutton(){
+            //選択されたオブジェクトの色を変える
+            GameObject slideButton = GameObject.Find("SlideButton");
+            RawImage slideImage =  slideButton.GetComponent<RawImage>();
+            nextARObjIndex.Zip(nextARObjIndex.Skip(1), (x, y) => new { OldValue = x, NewValue = y })
+    　　　　　　.Subscribe(t => {
+                //GridButtonList[t.NewValue].GetComponent<RawImage>().color = new Color(1, 1, 1, 0.5f);
+                GridButtonList[t.OldValue].GetComponent<RawImage>().color = new Color(1, 1, 1, 1);
+            });
+            nextARObjIndex.Subscribe(x => {
+              GridButtonList[x].GetComponent<RawImage>().color = new Color(1, 1, 1, 0.5f);;
+              slideImage.texture = GridButtonList[x].GetComponent<RawImage>().texture;
+            });
         }
     }
 }
