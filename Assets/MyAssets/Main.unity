@@ -120,8 +120,6 @@ GameObject:
   - component: {fileID: 58265730}
   - component: {fileID: 58265729}
   - component: {fileID: 58265732}
-  - component: {fileID: 58265733}
-  - component: {fileID: 58265734}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -245,28 +243,6 @@ MonoBehaviour:
   inPosition: {x: 0, y: 250, z: 0}
   outPosition: {x: 0, y: -250, z: 0}
   duration: 0.1
---- !u!114 &58265733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 58265727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3361b746a5fd6457f89b96c329ad1d03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &58265734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 58265727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3361b746a5fd6457f89b96c329ad1d03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &67246228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,6 +1493,7 @@ GameObject:
   - component: {fileID: 1121803335}
   - component: {fileID: 1121803337}
   - component: {fileID: 1121803336}
+  - component: {fileID: 1121803338}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1568,6 +1545,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
+--- !u!114 &1121803338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121803334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340f9e5593f084135abfdc589eb268f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1162176472
 GameObject:
   m_ObjectHideFlags: 0
