@@ -18,13 +18,14 @@ namespace ARCamera
         GameObject canvas;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
         private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
+        private List<GameObject> GridButtonList = new List<GameObject>();
         public IObservable<GameObject> OnObjectGenerated
         {
             get { return ARObjectSubject; }
         }
         public GameObject objBtnPrefab;
         Button undoBtn;
-        int nextARObjIndex = 0;
+        ReactiveProperty<int> nextARObjIndex = new ReactiveProperty<int>();
 		public ReactiveProperty<GameObject> nextARObjectRP = new ReactiveProperty<GameObject>();
         bool isOnGameObject = true;
         void Start()
@@ -43,6 +44,11 @@ namespace ARCamera
             });
 
             LoadPrefab();
+            
+            //選択されたオブジェクトの色を変える
+            nextARObjIndex.Subscribe(x => {
+              GridButtonList[x].GetComponent<RawImage>().color = new Color(1, 1, 1, 0.5f);;
+            });
 
 			kindOfnextObject = KindOfObject.Object;
 			// 次のTextObjectが変更されたときの処理
@@ -86,7 +92,7 @@ namespace ARCamera
                     {
                         if (kindOfnextObject == KindOfObject.Object)
                         {
-                            if (HitTestWithResultType(point, resultType, nextARObjIndex))
+                            if (HitTestWithResultType(point, resultType, nextARObjIndex.Value))
                             {
                                 return;
                             }
@@ -169,13 +175,14 @@ namespace ARCamera
                 RawImage img = btn.GetComponent<RawImage>();
                 img.texture = prefab_image;
                 btn.transform.SetParent(content.transform, false);//ボタンをcontentの子に入れる
+                GridButtonList.Add(btn); //ボタンをリストに入れる
 
                 int temp = i;
                 // 各オブジェクトボタンがクリックされたときの処理
                 btn.GetComponent<Button>().OnClickAsObservable()
                 .Subscribe(_ =>
                 {
-                    nextARObjIndex = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
+                    nextARObjIndex.Value = temp; // 即時値を代入、iだとクリック時に評価されてしまう。
 					kindOfnextObject = KindOfObject.Object;
                 });
             }
