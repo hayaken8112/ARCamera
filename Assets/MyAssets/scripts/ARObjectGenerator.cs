@@ -44,8 +44,12 @@ namespace ARCamera
             });
 
             LoadPrefab();
-            
             //選択されたオブジェクトの色を変える
+            nextARObjIndex.Zip(nextARObjIndex.Skip(1), (x, y) => new { OldValue = x, NewValue = y })
+    　　　　　　.Subscribe(t => {
+                //GridButtonList[t.NewValue].GetComponent<RawImage>().color = new Color(1, 1, 1, 0.5f);
+                GridButtonList[t.OldValue].GetComponent<RawImage>().color = new Color(1, 1, 1, 1);
+            });
             nextARObjIndex.Subscribe(x => {
               GridButtonList[x].GetComponent<RawImage>().color = new Color(1, 1, 1, 0.5f);;
             });
