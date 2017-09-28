@@ -26,18 +26,10 @@ namespace ARCamera
             currentMode = EditMode.Rotate;
 
 			// ObjectSelectかTextEdit状態から、画面をタッチしてMainに戻る
-            this.UpdateAsObservable()
-                .Where(_ => (currentState == States.ObjectSelect || currentState == States.TextEdit) && Input.touchCount == 1)
+            InputTest.Instance.OnTouchUp.Where(_ => currentState == States.ObjectSelect || currentState == States.TextEdit)
                 .Subscribe(_ => {
-                    isOnGameObject = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
-                    if (isOnGameObject) return; // UI上をタッチした場合は何もしない
-
-                    isOnGameObject = true;
-					var touch = Input.GetTouch(0);
-					if (touch.phase == TouchPhase.Began) {
-						currentState = States.Main;
-						StateSubject.OnNext(currentState); // 状態の変更を通知
-					}
+                    currentState = States.Main;
+                    StateSubject.OnNext(currentState); // 状態の変更を通知
                 });
         }
 
