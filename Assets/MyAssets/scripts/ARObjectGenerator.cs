@@ -187,7 +187,6 @@ namespace ARCamera
         void Change_Gridcolor_Slidebutton(){
             //選択されたオブジェクトの色を変える
             GameObject slideButton = GameObject.Find("SlideButton");
-            Debug.Log(slideButton.GetComponent<RawImage>() == null);
             RawImage slideImage =  slideButton.GetComponent<RawImage>();
             nextARObjIndex.Zip(nextARObjIndex.Skip(1), (x, y) => new { OldValue = x, NewValue = y })
     　　　　　　.Subscribe(t => {
