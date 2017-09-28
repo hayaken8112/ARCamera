@@ -11,6 +11,8 @@ using ARCamera;
 public class ObjectEditor : MonoBehaviour {
 
 	GameObject lastARObject;
+	[SerializeField] private float zoomRate;
+	[SerializeField] private float rotateSpeed;
 	// Use this for initialization
 	void Start () {
 		lastARObject = ARCamera.ARObjectGenerator.Instance.GetLastARObject();
@@ -37,14 +39,14 @@ public class ObjectEditor : MonoBehaviour {
 			float aveDiff = (touchZero.deltaPosition.x + touchOne.deltaPosition.x)/2;
 			Debug.Log("diff1" + deltaMagnitudediff);
 				if (lastARObject != null) {
-					float scale = lastARObject.transform.localScale.x + deltaMagnitudediff * 0.001f;
+					float scale = lastARObject.transform.localScale.x + deltaMagnitudediff * zoomRate;
 					if (scale > 0.005) {
 						lastARObject.transform.localScale = new Vector3(scale, scale, scale);
 					}
 					if (touchZero.deltaPosition.x * touchOne.deltaPosition.x > 0) {
 						Debug.Log("aveDiff:" + aveDiff);
 						Vector3 rot = lastARObject.transform.rotation.eulerAngles;
-						rot.y += aveDiff;
+						rot.y -= aveDiff * rotateSpeed;
 						lastARObject.transform.rotation = Quaternion.Euler(rot.x, rot.y, rot.z);
 					}
 				}
