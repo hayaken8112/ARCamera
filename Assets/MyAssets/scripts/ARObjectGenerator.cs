@@ -27,7 +27,6 @@ namespace ARCamera
         Button undoBtn;
         ReactiveProperty<int> nextARObjIndex = new ReactiveProperty<int>();
         public ReactiveProperty<GameObject> nextARObjectRP = new ReactiveProperty<GameObject>();
-        bool isOnGameObject = true;
         void Start()
         {
             canvas = GameObject.Find("Canvas");

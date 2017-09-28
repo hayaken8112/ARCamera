@@ -11,7 +11,6 @@ using ARCamera;
 public class ARObjectEditor : MonoBehaviour {
 
 	Vector3 defaultObjRot;
-	Vector3 defaultObjScale;
 	GameObject lastARObject;
 	Slider slider;
 	// Use this for initialization
@@ -19,12 +18,9 @@ public class ARObjectEditor : MonoBehaviour {
 		StateManager.Instance.currentMode = EditMode.Rotate;
 		slider = this.gameObject.GetComponent<Slider>();
 		GameObject sliderHandle = GameObject.Find("Handle");
-		var pointerDownTrigger = sliderHandle.AddComponent<ObservablePointerDownTrigger>();
 		var beginDragTrigger = sliderHandle.AddComponent<ObservableBeginDragTrigger>();
 		beginDragTrigger.OnBeginDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate)
 												  .Subscribe(pointerEventData => defaultObjRot = lastARObject.transform.rotation.eulerAngles);
-		beginDragTrigger.OnBeginDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Zoom)
-												  .Subscribe(pointerEventData => defaultObjScale = lastARObject.transform.localScale);
 		slider.OnDragAsObservable().Where(_ => StateManager.Instance.currentMode == EditMode.Rotate).Subscribe(pointerEventData => 
 		{
 			if (lastARObject != null) {

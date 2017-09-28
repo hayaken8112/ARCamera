@@ -12,7 +12,6 @@ namespace ARCamera
 	public enum EditMode { Rotate, Zoom }
     public class StateManager : SingletonMonoBehaviour<StateManager>
     {
-        bool isOnGameObject = true;
         private Subject<States> StateSubject = new Subject<States>();
         public IObservable<States> OnStatesChanged
         {
