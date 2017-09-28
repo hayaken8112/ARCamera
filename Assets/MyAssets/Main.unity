@@ -2114,6 +2114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f2d91d1c8834af58a88870bb99b52b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordingColor: {r: 0.95686275, g: 0.31764707, b: 0.11764706, a: 1}
   button: {fileID: 1336288096}
   holdTime: 1
   onClick:

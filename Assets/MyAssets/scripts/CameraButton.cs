@@ -14,6 +14,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     GameObject manager;
     PreviewUIManager previewUIManager;
     ScreenShot screenshot;
+    [SerializeField] Color recordingColor;
 
 
  //   #if UNITY_IPHONE
@@ -69,7 +70,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 		Debug.Log("long tap");
         this_is_video = true;
 		Everyplay.StartRecording();
-        button_color.color = new Color(1, 0, 0, 1);
+        button_color.color = recordingColor;
         #if UNITY_IOS && !UNITY_EDITOR
         _MovieStartSound ();
         #endif
