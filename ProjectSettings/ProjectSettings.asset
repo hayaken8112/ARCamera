@@ -648,7 +648,7 @@ PlayerSettings:
     7: 
     25: 
   platformArchitecture:
-    iOS: 2
+    iOS: 1
   scriptingBackend:
     Android: 0
     Metro: 2
