@@ -15,10 +15,15 @@ public class PreviewUIManager : MonoBehaviour {
 	GameObject cancelBtn;
 	GameObject shareBtn;
     GameObject canvas;
+    GameObject managers;
+    Tutorial tutorial;
+
 
 	// Use this for initialization
 	void Start () {
         canvas = GameObject.Find("Canvas");
+        managers = GameObject.Find("Managers");
+        tutorial =  managers.GetComponent<Tutorial>();
 	}
 	
 	// Update is called once per frame
@@ -40,7 +45,7 @@ public class PreviewUIManager : MonoBehaviour {
         cancelBtn = InstantiateUI(cancelButtonPrefab);
         saveBtn = InstantiateUI(saveButtonPrefab);
         // shareBtn = InstantiateUI(shareButtonPrefab);
-
+        tutorial.DoTutorial("save_tutorial");
     }
 
 	public void DestroyPreviewUI()

@@ -27,7 +27,7 @@ public class Tutorial : MonoBehaviour {
 		
 	}
 
-	void DoTutorial(string tutorial){
+	public void DoTutorial(string tutorial){
 		if(PlayerPrefs.GetInt(tutorial, -1) == -1){
 		  GameObject tutorial_panel_prefab;
 		  switch (tutorial){
