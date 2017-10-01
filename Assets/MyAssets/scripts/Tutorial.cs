@@ -7,6 +7,11 @@ using UniRx;
 public class Tutorial : MonoBehaviour {
 
 	public GameObject main_tutorial_panel_prefab;
+	public GameObject save_tutorial_panel_prefab;
+	public GameObject object_select_tutorial_panel_prefab;
+	public GameObject string_select_tutorial_panel_prefab;
+	public GameObject object_edit_tutorial_panel_prefab;
+	public GameObject string_edit_tutorial_panel_prefab;
 	GameObject main_tutorial_panel;
 	GameObject canvas;
 
@@ -14,16 +19,45 @@ public class Tutorial : MonoBehaviour {
 	void Start () {
 		canvas = GameObject.Find("Canvas");
 		Debug.Log(PlayerPrefs.GetInt("main_tutorial", -1));
-		if(PlayerPrefs.GetInt("main_tutorial", -1) == -1){
-		  main_tutorial_panel =  InstantiateUI(main_tutorial_panel_prefab);
-		  PlayerPrefs.SetInt("main_tutorial", 1);
-		  PlayerPrefs.Save();
-		}
+		DoTutorial("main_tutorial");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void DoTutorial(string tutorial){
+		if(PlayerPrefs.GetInt(tutorial, -1) == -1){
+		  GameObject tutorial_panel_prefab;
+		  switch (tutorial){
+            case "main_tutorial":
+              tutorial_panel_prefab = main_tutorial_panel_prefab;
+              break;
+            case "save_tutorial":
+              tutorial_panel_prefab = save_tutorial_panel_prefab;
+              break;
+            case "object_select":
+              tutorial_panel_prefab = object_select_tutorial_panel_prefab;
+              break;
+            case "string_select":
+              tutorial_panel_prefab = string_select_tutorial_panel_prefab;
+              break;
+            case "object_edit":
+              tutorial_panel_prefab = object_edit_tutorial_panel_prefab;
+              break;
+            case "string_edit":
+              tutorial_panel_prefab = string_edit_tutorial_panel_prefab;
+              break;
+			default:
+              tutorial_panel_prefab = null;
+			  Debug.Log("tutorial name is incorrect");
+			  break;
+		  }
+		  InstantiateUI(tutorial_panel_prefab);
+		  PlayerPrefs.SetInt(tutorial, 1);
+		  PlayerPrefs.Save();
+		}
 	}
 
 	    GameObject InstantiateUI(GameObject prefab)
