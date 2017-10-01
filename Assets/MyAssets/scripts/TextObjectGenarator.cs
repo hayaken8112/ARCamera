@@ -14,17 +14,24 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 	public GameObject inputFieldPrefab;
 	GameObject inputFieldInstance;
 	Button textButton;
+	GameObject managers;
+    Tutorial tutorial;
+
 	public GameObject textObject { get; set; }
 	public bool isEditting = false;
 	// Use this for initialization
 	void Start () {
 		canvas = GameObject.Find("Canvas");
+		managers = GameObject.Find("Managers");
+        tutorial =  managers.GetComponent<Tutorial>();
+
 		textButton = GameObject.Find("TextButton").GetComponent<Button>();
 		// textButtonが押されたときの処理
 		textButton.OnClickAsObservable().Subscribe(_ => {
 			inputFieldInstance = Instantiate(inputFieldPrefab);
 			inputFieldInstance.transform.SetParent(canvas.transform, false);
 			ARCamera.StateManager.Instance.currentState = ARCamera.States.TextEdit;
+			tutorial.DoTutorial("string_select");
 		});
 		this.UpdateAsObservable().Where(_ => textObject != null && isEditting).Subscribe(_ => {
 			textObject.transform.position = cameraChild.transform.position;
