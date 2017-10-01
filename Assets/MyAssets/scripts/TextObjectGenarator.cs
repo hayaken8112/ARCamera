@@ -10,10 +10,12 @@ namespace ARCamera {
 public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 
 	GameObject canvas;
+	[SerializeField] private GameObject cameraChild;
 	public GameObject inputFieldPrefab;
 	GameObject inputFieldInstance;
 	Button textButton;
 	public GameObject textObject { get; set; }
+	public bool isEditting = false;
 	// Use this for initialization
 	void Start () {
 		canvas = GameObject.Find("Canvas");
@@ -23,6 +25,10 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 			inputFieldInstance = Instantiate(inputFieldPrefab);
 			inputFieldInstance.transform.SetParent(canvas.transform, false);
 			ARCamera.StateManager.Instance.currentState = ARCamera.States.TextEdit;
+		});
+		this.UpdateAsObservable().Where(_ => textObject != null && isEditting).Subscribe(_ => {
+			textObject.transform.position = cameraChild.transform.position;
+			textObject.transform.rotation = cameraChild.transform.rotation;
 		});
 		// Mainに戻ったとき
 		ARCamera.StateManager.Instance.OnStatesChanged
