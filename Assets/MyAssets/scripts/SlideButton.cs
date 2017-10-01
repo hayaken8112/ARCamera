@@ -50,7 +50,8 @@ public class SlideButton : MonoBehaviour {
 		// Main状態に戻ったときの処理
 		ARCamera.StateManager.Instance.OnStatesChanged
 		.Where(state => state == ARCamera.States.Main)
-		.Subscribe(_ => panelslider.SlideOut());
+		.Subscribe(_ => {panelslider.SlideOut();
+		                 tutorial.DoTutorial("put_object");});
 
 
 	}

@@ -40,7 +40,8 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 		// Mainに戻ったとき
 		ARCamera.StateManager.Instance.OnStatesChanged
 		.Where(state => state == ARCamera.States.Main)
-		.Subscribe(_ => Destroy(inputFieldInstance));
+		.Subscribe(_ => {Destroy(inputFieldInstance);
+		                 tutorial.DoTutorial("put_object");});
 	}
 }
 } // ARCamera
