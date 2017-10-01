@@ -7,7 +7,6 @@ using UniRx;
 public class Tutorial : MonoBehaviour {
 
 	public GameObject main_tutorial_panel_prefab;
-	public GameObject save_tutorial_panel_prefab;
 	public GameObject object_select_tutorial_panel_prefab;
 	public GameObject string_select_tutorial_panel_prefab;
 	public GameObject put_object_tutorial_panel_prefab;
@@ -33,9 +32,6 @@ public class Tutorial : MonoBehaviour {
 		  switch (tutorial){
             case "main_tutorial":
               tutorial_panel_prefab = main_tutorial_panel_prefab;
-              break;
-            case "save_tutorial":
-              tutorial_panel_prefab = save_tutorial_panel_prefab;
               break;
             case "object_select":
               tutorial_panel_prefab = object_select_tutorial_panel_prefab;

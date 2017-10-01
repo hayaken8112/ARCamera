@@ -45,7 +45,6 @@ public class PreviewUIManager : MonoBehaviour {
         cancelBtn = InstantiateUI(cancelButtonPrefab);
         saveBtn = InstantiateUI(saveButtonPrefab);
         // shareBtn = InstantiateUI(shareButtonPrefab);
-        tutorial.DoTutorial("save_tutorial");
     }
 
 	public void DestroyPreviewUI()
