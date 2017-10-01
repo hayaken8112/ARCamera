@@ -10,8 +10,8 @@ public class Tutorial : MonoBehaviour {
 	public GameObject save_tutorial_panel_prefab;
 	public GameObject object_select_tutorial_panel_prefab;
 	public GameObject string_select_tutorial_panel_prefab;
-	public GameObject object_edit_tutorial_panel_prefab;
-	public GameObject string_edit_tutorial_panel_prefab;
+	public GameObject put_object_tutorial_panel_prefab;
+	public GameObject edit_object_tutorial_panel_prefab;
 	GameObject main_tutorial_panel;
 	GameObject canvas;
 
@@ -43,11 +43,11 @@ public class Tutorial : MonoBehaviour {
             case "string_select":
               tutorial_panel_prefab = string_select_tutorial_panel_prefab;
               break;
-            case "object_edit":
-              tutorial_panel_prefab = object_edit_tutorial_panel_prefab;
+            case "put_object":
+              tutorial_panel_prefab = put_object_tutorial_panel_prefab;
               break;
-            case "string_edit":
-              tutorial_panel_prefab = string_edit_tutorial_panel_prefab;
+            case "edit_object":
+              tutorial_panel_prefab = edit_object_tutorial_panel_prefab;
               break;
 			default:
               tutorial_panel_prefab = null;
