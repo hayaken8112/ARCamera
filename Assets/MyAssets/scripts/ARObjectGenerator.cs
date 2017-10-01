@@ -77,7 +77,7 @@ namespace ARCamera
                         ARHitTestResultType.ARHitTestResultTypeHorizontalPlane,
                         ARHitTestResultType.ARHitTestResultTypeFeaturePoint
                     };
-
+                    tutorial.DoTutorial("edit_object");
                     foreach (ARHitTestResultType resultType in resultTypes)
                     {
                         if (kindOfnextObject == KindOfObject.Object)
@@ -95,7 +95,6 @@ namespace ARCamera
                             }
                         }
                     }
-                    tutorial.DoTutorial("edit_object");
                 });
         }
 
