@@ -16,6 +16,10 @@ public class SlideButton : MonoBehaviour {
 	Button slideButton;
 
 	PanelSlider panelslider;
+    GameObject canvas;
+    GameObject managers;
+    Tutorial tutorial;
+
 	bool slidein = true;
 	public void Slide(){
 		if(slidein){
@@ -30,6 +34,9 @@ public class SlideButton : MonoBehaviour {
 	}
 
 	void Start () {
+        canvas = GameObject.Find("Canvas");
+        managers = GameObject.Find("Managers");
+        tutorial =  managers.GetComponent<Tutorial>();
 		scrollview = GameObject.Find("Scroll View");
 		slideButton = this.gameObject.GetComponent<Button>();
 		panelslider = scrollview.GetComponent<PanelSlider>();
@@ -37,6 +44,7 @@ public class SlideButton : MonoBehaviour {
 		slideButton.OnClickAsObservable().Subscribe(_ => {
 			panelslider.SlideIn();
 			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+			tutorial.DoTutorial("object_select");
 		});
 
 		// Main状態に戻ったときの処理
