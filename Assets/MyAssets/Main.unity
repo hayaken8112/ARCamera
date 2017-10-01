@@ -1534,6 +1534,7 @@ GameObject:
   - component: {fileID: 1121803336}
   - component: {fileID: 1121803338}
   - component: {fileID: 1121803339}
+  - component: {fileID: 1121803340}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1609,6 +1610,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomRate: 0.0015
   rotateSpeed: 1
+--- !u!114 &1121803340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121803334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28cfed5b4409f43f88c4b17b83638da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  main_tutorial_panel_prefab: {fileID: 1122030575735124, guid: 073ce2c9e2c564f29adb309d124c1e63,
+    type: 2}
+  object_select_tutorial_panel_prefab: {fileID: 1230580183109222, guid: e708cf0bd404449d3aae964e77eb0f43,
+    type: 2}
+  string_select_tutorial_panel_prefab: {fileID: 1174859862098524, guid: 87bf3e206c4cb4dc1a9acc4a15e6ae3b,
+    type: 2}
+  put_object_tutorial_panel_prefab: {fileID: 1084227021112900, guid: 8e8613f3519154536bc9cacc33af160e,
+    type: 2}
+  edit_object_tutorial_panel_prefab: {fileID: 1049395738597804, guid: c2feebdc649a447f0bbca56408f78f6d,
+    type: 2}
 --- !u!1 &1162176472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,7 +1785,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -60, y: -60}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1266873524
 MonoBehaviour:
