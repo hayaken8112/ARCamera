@@ -16,6 +16,8 @@ namespace ARCamera
         public KindOfObject kindOfnextObject { get; set; }
         GameObject[] prefabs;
         GameObject canvas;
+        GameObject managers;
+        Tutorial tutorial;
         Stack<GameObject> ARObjectStack = new Stack<GameObject>();
         private Subject<GameObject> ARObjectSubject = new Subject<GameObject>();
         private List<GameObject> GridButtonList = new List<GameObject>();
@@ -30,7 +32,8 @@ namespace ARCamera
         void Start()
         {
             canvas = GameObject.Find("Canvas");
-
+            managers = GameObject.Find("Managers");
+            tutorial =  managers.GetComponent<Tutorial>();
             undoBtn = GameObject.Find("UndoButton").GetComponent<Button>();
             // undoButtonの処理
             undoBtn.OnClickAsObservable().Subscribe(_ =>
@@ -92,6 +95,7 @@ namespace ARCamera
                             }
                         }
                     }
+                    tutorial.DoTutorial("edit_object");
                 });
         }
 
