@@ -16,6 +16,7 @@ public class MyInputField : MonoBehaviour {
 		inputField = this.GetComponent<InputField>();	
 		inputField.ActivateInputField();
 		inputText = "";
+		ARCamera.TextObjectGenarator.Instance.isEditting = true;
 		ARCamera.TextObjectGenarator.Instance.textObject =  FlyingText.GetObject(inputText, new Vector3(0,0,1), Quaternion.identity);
 		inputField.OnValueChangedAsObservable()
 		.Subscribe( text => 
@@ -32,6 +33,7 @@ public class MyInputField : MonoBehaviour {
 				ARCamera.ARObjectGenerator.Instance.kindOfnextObject = ARCamera.ARObjectGenerator.KindOfObject.Text;
 				ARCamera.ARObjectGenerator.Instance.nextARObjectRP.Value = ARCamera.TextObjectGenarator.Instance.textObject;
 			}
+			ARCamera.TextObjectGenarator.Instance.isEditting = false;
 		});
 	}
 	
