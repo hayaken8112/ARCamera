@@ -18,9 +18,9 @@ public class PhotoPreview : MonoBehaviour
     {
         var tex = new RenderTexture(512, 512, 16);
 		img = this.gameObject.GetComponent<RawImage>();
-        if (StateManager.Instance.currentState == States.PreviewPhoto) {
+        if (StateManager.Instance.currentState.Value == States.PreviewPhoto) {
             img.texture = ReadTexture(PathManager.GetPhotoPath(), Screen.width, Screen.height);
-        } else if (StateManager.Instance.currentState == States.PreviewVideo) {
+        } else if (StateManager.Instance.currentState.Value == States.PreviewVideo) {
             videoPlayerObj = Instantiate(videoPlayerPrefab);
             StartCoroutine(SetVideo(tex)); // 次のフレームでVideoPlayerにURLをセットする
             img.texture = tex;

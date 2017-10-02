@@ -25,11 +25,11 @@ public class SlideButton : MonoBehaviour {
 		if(slidein){
 			panelslider.SlideIn();
 			slidein = false;
-			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+			ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.ObjectSelect;
 		} else {
 			panelslider.SlideOut();
 			slidein = true;
-			ARCamera.StateManager.Instance.currentState = ARCamera.States.Main;
+			ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.Main;
 		}
 	}
 
@@ -43,12 +43,12 @@ public class SlideButton : MonoBehaviour {
 		// slideButtonが押されたときの処理
 		slideButton.OnClickAsObservable().Subscribe(_ => {
 			panelslider.SlideIn();
-			ARCamera.StateManager.Instance.currentState = ARCamera.States.ObjectSelect;
+			ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.ObjectSelect;
 			tutorial.DoTutorial("object_select");
 		});
 
 		// Main状態に戻ったときの処理
-		ARCamera.StateManager.Instance.OnStatesChanged
+		ARCamera.StateManager.Instance.currentState
 		.Where(state => state == ARCamera.States.Main)
 		.Subscribe(_ => {panelslider.SlideOut();
 		                 tutorial.DoTutorial("put_object");});

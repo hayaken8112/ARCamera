@@ -28,20 +28,26 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 		textButton = GameObject.Find("TextButton").GetComponent<Button>();
 		// textButtonが押されたときの処理
 		textButton.OnClickAsObservable().Subscribe(_ => {
-			inputFieldInstance = Instantiate(inputFieldPrefab);
-			inputFieldInstance.transform.SetParent(canvas.transform, false);
-			ARCamera.StateManager.Instance.currentState = ARCamera.States.TextEdit;
-			tutorial.DoTutorial("string_select");
+			if (ARCamera.StateManager.Instance.currentState.Value == ARCamera.States.TextEdit){
+				inputFieldInstance.GetComponent<InputField>().ActivateInputField();
+			} else {
+				inputFieldInstance = Instantiate(inputFieldPrefab);
+				inputFieldInstance.transform.SetParent(canvas.transform, false);
+				ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.TextEdit;
+				tutorial.DoTutorial("string_select");
+			}
 		});
 		this.UpdateAsObservable().Where(_ => textObject != null && isEditting).Subscribe(_ => {
 			textObject.transform.position = cameraChild.transform.position;
 			textObject.transform.rotation = cameraChild.transform.rotation;
 		});
 		// Mainに戻ったとき
-		ARCamera.StateManager.Instance.OnStatesChanged
+		ARCamera.StateManager.Instance.currentState
 		.Where(state => state == ARCamera.States.Main)
-		.Subscribe(_ => {Destroy(inputFieldInstance);
-		                 tutorial.DoTutorial("put_object");});
+		.Subscribe(_ => {
+			Destroy(inputFieldInstance);
+			tutorial.DoTutorial("put_object");
+		});
 	}
 }
 } // ARCamera

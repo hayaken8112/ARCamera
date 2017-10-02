@@ -34,14 +34,14 @@ public class SaveButton : MonoBehaviour {
 	void Start () {
 		saveBtn = this.gameObject.GetComponent<Button>();
 		cancelBtnObj = GameObject.Find("CancelButton(Clone)");
-		if (StateManager.Instance.currentState == States.PreviewPhoto){
+		if (StateManager.Instance.currentState.Value == States.PreviewPhoto){
 			saveBtn.OnClickAsObservable().Subscribe(_ => {
 				this.transform.Translate(0, -100, 0);
 				StartCoroutine(WaitUntilFinishedWritingPicture());
 				cancelBtnObj.transform.Translate(0, 100, 0);
 			});
 		}
-		else if (StateManager.Instance.currentState == States.PreviewVideo){
+		else if (StateManager.Instance.currentState.Value == States.PreviewVideo){
 			saveBtn.OnClickAsObservable().Subscribe(_ => {
 				this.transform.Translate(0, -100, 0);
 				StartCoroutine(WaitUntilFinishedWritingMovie());

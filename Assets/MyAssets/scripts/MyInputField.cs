@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using System;
+using ARCamera;
 
 public class MyInputField : MonoBehaviour {
 
@@ -33,7 +34,9 @@ public class MyInputField : MonoBehaviour {
 				ARCamera.ARObjectGenerator.Instance.kindOfnextObject = ARCamera.ARObjectGenerator.KindOfObject.Text;
 				ARCamera.ARObjectGenerator.Instance.nextARObjectRP.Value = ARCamera.TextObjectGenarator.Instance.textObject;
 			}
-			ARCamera.TextObjectGenarator.Instance.isEditting = false;
+			if (Input.touchCount == 0) {
+				ARCamera.StateManager.Instance.currentState.Value = States.Main;
+			}
 		});
 	}
 	

@@ -62,7 +62,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         _CameraSound ();
         #endif
         StartCoroutine(previewUIManager.MakePreviewUI());
-        StateManager.Instance.currentState = States.PreviewPhoto;
+        StateManager.Instance.currentState.Value = States.PreviewPhoto;
 	}
 
 
@@ -102,7 +102,7 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
             _MovieEndSound ();
             #endif
 		    Everyplay.StopRecording();
-            StateManager.Instance.currentState = States.PreviewVideo;
+            StateManager.Instance.currentState.Value = States.PreviewVideo;
             StartCoroutine(previewUIManager.MakePreviewUI());
             this_is_video = false;
         }

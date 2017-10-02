@@ -12,25 +12,25 @@ namespace ARCamera
 	public enum EditMode { Rotate, Zoom }
     public class StateManager : SingletonMonoBehaviour<StateManager>
     {
-        private Subject<States> StateSubject = new Subject<States>();
-        public IObservable<States> OnStatesChanged
-        {
-            get { return StateSubject; }
-        }
-        public States currentState { get; set; }
+        public ReactiveProperty<States> currentState = new ReactiveProperty<States>();
 	    public EditMode currentMode;
         void Start()
         {
-            currentState = States.Main; // 初期化
+            currentState.Value = States.Main; // 初期化
             currentMode = EditMode.Rotate;
 
 			// ObjectSelectかTextEdit状態から、画面をタッチしてMainに戻る
-            InputTest.Instance.OnTouchUp.Where(_ => currentState == States.ObjectSelect || currentState == States.TextEdit)
+            InputTest.Instance.OnTouchUp.Where(_ => currentState.Value == States.ObjectSelect || currentState.Value == States.TextEdit)
                 .Subscribe(_ => {
-                    currentState = States.Main;
-                    StateSubject.OnNext(currentState); // 状態の変更を通知
+                    currentState.Value = States.Main;
                 });
+            
+            currentState.Where(state => state != States.Main).Subscribe(_ => {
+                TextObjectGenarator.Instance.isEditting = false;
+            });
         }
+
+        
 
     }
 }

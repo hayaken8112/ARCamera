@@ -33,7 +33,7 @@ namespace ARCamera
         {
             canvas = GameObject.Find("Canvas");
             managers = GameObject.Find("Managers");
-            tutorial =  managers.GetComponent<Tutorial>();
+            tutorial = managers.GetComponent<Tutorial>();
             undoBtn = GameObject.Find("UndoButton").GetComponent<Button>();
             // undoButtonの処理
             undoBtn.OnClickAsObservable().Subscribe(_ =>
@@ -59,23 +59,20 @@ namespace ARCamera
 
             // Main状態でのオブジェクトの配置処理
 
-            InputTest.Instance.OnTouchUp.Where(_ => StateManager.Instance.currentState == States.Main)
+            InputTest.Instance.OnTouchUp.Where(_ => StateManager.Instance.currentState.Value == States.Main)
                 .Subscribe(touch =>
                 {
+                    ARCamera.TextObjectGenarator.Instance.isEditting = false;
                     var screenPosition = Camera.main.ScreenToViewportPoint(touch.position);
-                    ARPoint point = new ARPoint
-                    {
-                        x = screenPosition.x,
-                        y = screenPosition.y
-                    };
+                    ARPoint point = new ARPoint {x = screenPosition.x, y = screenPosition.y};
 
                     // prioritize reults types
                     ARHitTestResultType[] resultTypes = {
-                        ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
-                        // if you want to use infinite planes use this:
-                        //ARHitTestResultType.ARHitTestResultTypeExistingPlane,
-                        ARHitTestResultType.ARHitTestResultTypeHorizontalPlane,
-                        ARHitTestResultType.ARHitTestResultTypeFeaturePoint
+                    ARHitTestResultType.ARHitTestResultTypeExistingPlaneUsingExtent, 
+                    // if you want to use infinite planes use this:
+                    //ARHitTestResultType.ARHitTestResultTypeExistingPlane,
+                    ARHitTestResultType.ARHitTestResultTypeHorizontalPlane,
+                    ARHitTestResultType.ARHitTestResultTypeFeaturePoint
                     };
                     tutorial.DoTutorial("edit_object");
                     foreach (ARHitTestResultType resultType in resultTypes)
