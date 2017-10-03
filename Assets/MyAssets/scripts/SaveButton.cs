@@ -50,10 +50,6 @@ public class SaveButton : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 /* 
      IEnumerator WaitUntilFinishedWritingPicture(){

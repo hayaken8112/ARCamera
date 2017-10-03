@@ -15,8 +15,10 @@ public class CancelButton : MonoBehaviour {
 		managers = GameObject.Find("Managers");
 		previewUIManager = managers.GetComponent<PreviewUIManager>();
 		cancelBtn = this.gameObject.GetComponent<Button>();
-		cancelBtn.OnClickAsObservable().Subscribe(_ => previewUIManager.DestroyPreviewUI());
-		ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.Main;
+		cancelBtn.OnClickAsObservable().Subscribe(_ => {
+			previewUIManager.DestroyPreviewUI();
+			ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.Main;
+		});
 	}
 	
 
