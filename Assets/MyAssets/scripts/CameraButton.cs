@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using UniRx;
 using UnityEngine.SceneManagement;
 using ARCamera;
+using UniRx.Triggers;
 
 public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
     GameObject manager;
@@ -50,8 +51,9 @@ public class CameraButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         screenshot = this.gameObject.GetComponent<ScreenShot>();
 		button = GameObject.Find("Button");
         button_color = button.GetComponent<Image>();
-		this.onClick.AddListener(TakeShot);
 		this.onLongPress.AddListener(Record);
+        this.GetComponent<Button>().OnClickAsObservable().Where(_ => StateManager.Instance.currentState.Value == States.Main)
+                .Subscribe(_ => TakeShot());
 	}
 	
 	void TakeShot(){
