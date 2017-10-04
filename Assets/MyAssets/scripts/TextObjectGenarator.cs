@@ -17,8 +17,6 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 	GameObject managers;
     Tutorial tutorial;
 	GameObject undobutton;
-	public GameObject undobuttonPrefab;
-
 	public GameObject textObject { get; set; }
 	public bool isEditting = false;
 	// Use this for initialization
