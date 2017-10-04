@@ -20,7 +20,7 @@ public class SlideButton : MonoBehaviour {
     GameObject managers;
     Tutorial tutorial;
 
-	bool slidein = true;
+	bool slidein = false;
 	public void Slide(){
 		if(slidein){
 			panelslider.SlideIn();
@@ -42,16 +42,21 @@ public class SlideButton : MonoBehaviour {
 		panelslider = scrollview.GetComponent<PanelSlider>();
 		// slideButtonが押されたときの処理
 		slideButton.OnClickAsObservable().Subscribe(_ => {
-			panelslider.SlideIn();
-			ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.ObjectSelect;
-			tutorial.DoTutorial("object_select");
+			if(!slidein){
+			  slidein = true;
+			  panelslider.SlideIn();
+			  ARCamera.StateManager.Instance.currentState.Value = ARCamera.States.ObjectSelect;
+			  tutorial.DoTutorial("object_select");
+			}
 		});
 
 		// Main状態に戻ったときの処理
 		ARCamera.StateManager.Instance.currentState
 		.Where(state => state == ARCamera.States.Main)
-		.Subscribe(_ => {panelslider.SlideOut();
-		                 tutorial.DoTutorial("put_object");});
+		.Subscribe(_ => {if(slidein){
+			               panelslider.SlideOut();
+		                   slidein = false;
+		                   tutorial.DoTutorial("put_object");}});
 
 
 	}
