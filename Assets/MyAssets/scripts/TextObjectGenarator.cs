@@ -16,11 +16,17 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 	Button textButton;
 	GameObject managers;
     Tutorial tutorial;
+	GameObject undobutton;
+	public GameObject undobuttonPrefab;
 
 	public GameObject textObject { get; set; }
 	public bool isEditting = false;
 	// Use this for initialization
+	bool noUndoButton = false;
+	Vector3 undobuttonvector;
 	void Start () {
+		undobutton = GameObject.Find("UndoButton");
+		undobuttonvector = undobutton.GetComponent<RectTransform>().localPosition;
 		canvas = GameObject.Find("Canvas");
 		managers = GameObject.Find("Managers");
         tutorial =  managers.GetComponent<Tutorial>();
@@ -28,6 +34,8 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 		textButton = GameObject.Find("TextButton").GetComponent<Button>();
 		// textButtonが押されたときの処理
 		textButton.OnClickAsObservable().Subscribe(_ => {
+			undobutton.GetComponent<RectTransform>().localPosition =  new Vector3 (1000, 1000, 1000);
+			noUndoButton = true;
 			if (ARCamera.StateManager.Instance.currentState.Value == ARCamera.States.TextEdit){
 				inputFieldInstance.GetComponent<InputField>().ActivateInputField();
 			} else {
@@ -45,6 +53,10 @@ public class TextObjectGenarator : SingletonMonoBehaviour<TextObjectGenarator> {
 		ARCamera.StateManager.Instance.currentState
 		.Where(state => state == ARCamera.States.Main)
 		.Subscribe(_ => {
+			if(noUndoButton){
+			  undobutton.GetComponent<RectTransform>().localPosition = undobuttonvector;
+			  noUndoButton = false;
+			}
 			Destroy(inputFieldInstance);
 			tutorial.DoTutorial("put_object");
 		});
