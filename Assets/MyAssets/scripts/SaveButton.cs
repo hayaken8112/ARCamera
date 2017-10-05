@@ -36,16 +36,16 @@ public class SaveButton : MonoBehaviour {
 		cancelBtnObj = GameObject.Find("CancelButton(Clone)");
 		if (StateManager.Instance.currentState.Value == States.PreviewPhoto){
 			saveBtn.OnClickAsObservable().Subscribe(_ => {
-				this.transform.Translate(0, -100, 0);
+				this.transform.Translate(0, -200, 0);
+				cancelBtnObj.transform.Translate(0, 200, 0);
 				StartCoroutine(WaitUntilFinishedWritingPicture());
-				cancelBtnObj.transform.Translate(0, 100, 0);
 			});
 		}
 		else if (StateManager.Instance.currentState.Value == States.PreviewVideo){
 			saveBtn.OnClickAsObservable().Subscribe(_ => {
-				this.transform.Translate(0, -100, 0);
+				this.transform.Translate(0, -200, 0);
+				cancelBtnObj.transform.Translate(0, 200, 0);
 				StartCoroutine(WaitUntilFinishedWritingMovie());
-				cancelBtnObj.transform.Translate(0, 100, 0);
 			});
 		}
 	}
@@ -81,7 +81,7 @@ public class SaveButton : MonoBehaviour {
 		 saved = InstantiateUI(savedPrefab);
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
-		 cancelBtnObj.transform.Translate(0, -100, 0);
+		 cancelBtnObj.transform.Translate(0, -200, 0);
 		
     }
 
@@ -102,7 +102,6 @@ public class SaveButton : MonoBehaviour {
 		 yield return new WaitForSeconds( 1 );
 		 Destroy(saved);
 		 #endif
-		 cancelBtnObj.transform.Translate(0, -100, 0);
 
 		
     }
@@ -117,6 +116,7 @@ public class SaveButton : MonoBehaviour {
 		IEnumerator DestroySaved() {
 			yield return new WaitForSeconds(1);
 			if(saved != null) Destroy(saved);
+			cancelBtnObj.transform.Translate(0, -200, 0);
 		}
 
 }
